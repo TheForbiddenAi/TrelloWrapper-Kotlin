@@ -1,9 +1,5 @@
 package me.theforbiddenai.trelloapiwrapper.utils
 
-import com.google.gson.GsonBuilder
-
-private val gson = GsonBuilder().serializeNulls().create()
-
 class LimitOptions {
 
     val status: String = ""
@@ -14,6 +10,6 @@ class LimitOptions {
 
 class DescData {
 
-    val emoji = gson.fromJson("", mapOf<String, String>()::class.java)
+    val emoji: Map<String, String> = mapOf()
 
 }

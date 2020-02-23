@@ -1,11 +1,8 @@
 package me.theforbiddenai.trelloapiwrapper
 
-import com.github.kittinunf.fuel.httpGet
-import com.github.kittinunf.result.Result
 import com.google.gson.GsonBuilder
-import me.theforbiddenai.trelloapiwrapper.objects.Action
-import me.theforbiddenai.trelloapiwrapper.objects.Board
-import me.theforbiddenai.trelloapiwrapper.objects.Card
+import me.theforbiddenai.trelloapiwrapper.objects.*
+import me.theforbiddenai.trelloapiwrapper.utils.HttpRequests
 
 
 class TrelloApi(
@@ -14,6 +11,8 @@ class TrelloApi(
 ) {
 
     private val gson = GsonBuilder().serializeNulls().create()
+
+    internal val httpRequests = HttpRequests()
     internal val baseApiUrl: String = "https://api.trello.com/1"
     internal val credentials: String = "key=$apiKey&token=$token"
 
@@ -41,6 +40,43 @@ class TrelloApi(
         return card
     }
 
+    fun getCheckList(checklistId: String): Checklist {
+        val checklistUrl = "$baseApiUrl/checklists/$checklistId?$credentials"
+
+        val checklist = getObjectInternal(Checklist::class.java, checklistUrl)
+        checklist.trelloApi = this
+
+        return checklist
+    }
+
+    fun getCustomField(customFieldId: String): CustomField {
+        val customFieldUrl = "$baseApiUrl/customFields/$customFieldId?$credentials"
+
+        val customField = getObjectInternal(CustomField::class.java, customFieldUrl)
+        customField.trelloApi = this
+
+        return customField
+    }
+
+    fun getEnterprise(enterpriseId: String): Enterprise {
+        val enterpriseUrl = "$baseApiUrl/enterprises/$enterpriseId?$credentials"
+
+        val enterprise = getObjectInternal(Enterprise::class.java, enterpriseUrl)
+        enterprise.trelloApi = this
+
+        return enterprise
+    }
+
+    fun getLabel(labelId: String): Label {
+        val labelUrl = "$baseApiUrl/labels/$labelId?$credentials"
+
+        val label = getObjectInternal(Label::class.java, labelUrl)
+        label.trelloApi = this
+
+        return label
+    }
+
+
     /**
      * Deserializes the json from a given url into a given class
      *
@@ -48,44 +84,25 @@ class TrelloApi(
      * @param url The object's url
      * @return The found object
      */
-    internal fun <T> getObjectInternal(clazz: Class<T>, url: String): T {
-        val jsonData = getJsonData(url)
+    private fun <T> getObjectInternal(clazz: Class<T>, url: String): T {
+        val jsonData = httpRequests.getJsonData(url)
 
         if (jsonData.isEmpty()) {
             val clazzName: String = clazz.simpleName.toLowerCase()
-            throw IllegalArgumentException("Failed to find a(n) $clazzName with the given id")
+            val checkVowel: String = if (clazzName.matches("^[aeiouy].*".toRegex())) "an" else "a"
+            throw IllegalArgumentException("Failed to find $checkVowel $clazzName with the given id")
         }
 
-        return gson.fromJson(getJsonData(url), clazz)
+        return gson.fromJson(jsonData, clazz)
     }
 
     internal fun getBoardInternal(url: String): Board {
         val board = getObjectInternal(Board::class.java, url)
-        board.trelloApi = this;
+        board.trelloApi = this
 
         return board
     }
 
-    /**
-     * Retrieves the json data from the given url
-     *
-     * @param url The url the json data is coming from
-     * @return The found json data in the form of a string
-     */
-    internal fun getJsonData(url: String): String {
-        val (_, _, result) = url.httpGet().responseString()
-
-        return when (result) {
-            is Result.Success -> {
-                result.get()
-            }
-
-            is Result.Failure -> {
-                ""
-            }
-
-        }
-    }
 
 }
 

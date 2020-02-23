@@ -11,7 +11,7 @@ class Card {
     internal lateinit var trelloApi: TrelloApi
 
     val id: String = ""
-    val checkItemStates = gson.fromJson("", Array<String>::class.java)
+    val checkItemStates = gson.fromJson("", Array<CheckItemStates>::class.java)
     val closed: Boolean = false
     val dateLastActivity: Boolean = false
     val desc: String = ""
@@ -38,6 +38,11 @@ class Card {
     val subscribed: Boolean = false
     val url: String = ""
     val cover = gson.fromJson("", Cover::class.java)
+
+    class CheckItemStates {
+        val idCheckItem: String = ""
+        val state: String = ""
+    }
 
     class Badge {
 

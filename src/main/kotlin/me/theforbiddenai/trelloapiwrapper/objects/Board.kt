@@ -15,19 +15,18 @@ class Board {
     val id: String = ""
     val name: String = ""
     val desc: String = ""
-    val descData = gson.fromJson("", DescData::class.java)
+    val descData: DescData = DescData()
     val closed: Boolean = false
     val idOrganization: String = ""
     val idEnterprise: String = ""
-    val limits = gson.fromJson("", Limits::class.java)
+    val limits: Limits = Limits()
     val pinned: Boolean = false
     val starred: Boolean = false
     val url: String = ""
-    val prefs = gson.fromJson("", MyPrefs::class.java)
-    val memberships = gson.fromJson("", Array<Membership>::class.java)
+    val prefs: Prefs = Prefs()
+    val memberships: Array<Membership> = arrayOf()
     val subscribed: String = ""
-    val labelNames = gson.fromJson("", mapOf<String, String>()::class.java)
-    val powerUps: ArrayList<String> = arrayListOf()
+    val labelNames: Map<String, String> = mapOf()
     val dateLastActivity: String = ""
     val dateLastView: String = ""
     val shortUrl: String = ""
@@ -35,14 +34,21 @@ class Board {
 
     fun getLabels(): Array<Label> {
         val labelUrl = "${trelloApi.baseApiUrl}/boards/$id/labels?${trelloApi.credentials}"
-        val jsonLabelArray = JsonParser.parseString(trelloApi.getJsonData(labelUrl)).asJsonArray
+        val jsonData = trelloApi.httpRequests.getJsonData(labelUrl)
 
-        return jsonLabelArray.map { gson.fromJson(it, Label::class.java) }.toTypedArray()
+        val jsonLabelArray = JsonParser.parseString(jsonData).asJsonArray
+
+        val labelArray = jsonLabelArray.map { gson.fromJson(it, Label::class.java) }.toTypedArray()
+        labelArray.forEach { it.trelloApi = trelloApi }
+
+        return labelArray
     }
 
     fun getActions(): Array<Action> {
         val actionUrl = "${trelloApi.baseApiUrl}/boards/$id/actions?${trelloApi.credentials}"
-        val jsonActionArray = JsonParser.parseString(trelloApi.getJsonData(actionUrl)).asJsonArray
+        val jsonData = trelloApi.httpRequests.getJsonData(actionUrl)
+
+        val jsonActionArray = JsonParser.parseString(jsonData).asJsonArray
 
         val actionArray = jsonActionArray.map { gson.fromJson(it, Action::class.java) }.toTypedArray()
         actionArray.forEach { it.trelloApi = trelloApi }
@@ -52,88 +58,125 @@ class Board {
 
     class Limits {
 
-        val attachments = gson.fromJson("", AttachmentLimits::class.java)
-        val boards = gson.fromJson("", BoardLimits::class.java)
-        val cards = gson.fromJson("", CardLimits::class.java)
-        val checklists = gson.fromJson("", CheckListLimits::class.java)
-        val checkItems = gson.fromJson("", CheckItemLimits::class.java)
-        val customFields = gson.fromJson("", CustomFieldLimits::class.java)
-        val customFieldOptions = gson.fromJson("", CustomFieldOptionLimits::class.java)
-        val labels = gson.fromJson("", LabelLimits::class.java)
-        val lists = gson.fromJson("", ListLimits::class.java)
-        val stickers = gson.fromJson("", StickerLimits::class.java)
-        val reactions = gson.fromJson("", ReactionLimits::class.java)
+        val attachments: AttachmentLimits = AttachmentLimits()
+        val boards: BoardLimits = BoardLimits()
+        val cards: CardLimits = CardLimits()
+        val checklists: CheckListLimits = CheckListLimits()
+        val checkItems: CheckItemLimits = CheckItemLimits()
+        val customFields: CustomFieldLimits = CustomFieldLimits()
+        val customFieldOptions: CustomFieldOptionLimits = CustomFieldOptionLimits()
+        val labels: LabelLimits = LabelLimits()
+        val lists: ListLimits = ListLimits()
+        val stickers: StickerLimits = StickerLimits()
+        val reactions: ReactionLimits = ReactionLimits()
 
         class AttachmentLimits {
 
-            val perBoard = gson.fromJson("", LimitOptions::class.java)
-            val perCard = gson.fromJson("", LimitOptions::class.java)
+            val perBoard: LimitOptions = LimitOptions()
+            val perCard: LimitOptions = LimitOptions()
         }
 
         class BoardLimits {
 
-            val totalMembersPerBoard = gson.fromJson("", LimitOptions::class.java)
+            val totalMembersPerBoard: LimitOptions = LimitOptions()
 
         }
 
         class CardLimits {
 
-            val openPerBoard = gson.fromJson("", LimitOptions::class.java)
-            val openPerList = gson.fromJson("", LimitOptions::class.java)
-            val totalPerBoard = gson.fromJson("", LimitOptions::class.java)
-            val totalPerList = gson.fromJson("", LimitOptions::class.java)
+            val openPerBoard: LimitOptions = LimitOptions()
+            val openPerList: LimitOptions = LimitOptions()
+            val totalPerBoard: LimitOptions = LimitOptions()
+            val totalPerList: LimitOptions = LimitOptions()
         }
 
         class CheckListLimits {
 
-            val perBoard = gson.fromJson("", LimitOptions::class.java)
-            val perCard = gson.fromJson("", LimitOptions::class.java)
+            val perBoard: LimitOptions = LimitOptions()
+            val perCard: LimitOptions = LimitOptions()
 
         }
 
         class CheckItemLimits {
 
-            val perChecklist = gson.fromJson("", LimitOptions::class.java)
+            val perChecklist: LimitOptions = LimitOptions()
 
         }
 
         class CustomFieldLimits {
 
-            val perBoard = gson.fromJson("", LimitOptions::class.java)
+            val perBoard: LimitOptions = LimitOptions()
 
         }
 
         class CustomFieldOptionLimits {
 
-            val perField = gson.fromJson("", LimitOptions::class.java)
+            val perField: LimitOptions = LimitOptions()
 
         }
 
         class LabelLimits {
 
-            val perBoard = gson.fromJson("", LimitOptions::class.java)
+            val perBoard: LimitOptions = LimitOptions()
 
         }
 
         class ListLimits {
 
-            val openPerBoard = gson.fromJson("", LimitOptions::class.java)
-            val totalPerBoard = gson.fromJson("", LimitOptions::class.java)
+            val openPerBoard: LimitOptions = LimitOptions()
+            val totalPerBoard: LimitOptions = LimitOptions()
 
         }
 
         class StickerLimits {
 
-            val perCard = gson.fromJson("", LimitOptions::class.java)
+            val perCard: LimitOptions = LimitOptions()
 
         }
 
         class ReactionLimits {
 
-            val perAction = gson.fromJson("", LimitOptions::class.java)
-            val uniquePerAction = gson.fromJson("", LimitOptions::class.java)
+            val perAction: LimitOptions = LimitOptions()
+            val uniquePerAction: LimitOptions = LimitOptions()
 
         }
+
+    }
+
+    class Prefs {
+
+        val permissionLevel: String = ""
+        val hideVotes: Boolean = false
+        val voting: String = ""
+        val comments: String = ""
+        val invitations: String = ""
+        val selfJoin: Boolean = false
+        val cardCovers: Boolean = false
+        val isTemplate: Boolean = false
+        val cardAging: String = ""
+        val calendarFeedEnabled: Boolean = false
+        val background: String = ""
+        val backgroundImage: String = ""
+        val backgroundTile: Boolean = false
+        val backgroundBrightness: String = ""
+        val backgroundColor: String = ""
+        val backgroundBottomColor: String = ""
+        val backgroundTopColor: String = ""
+        val canBePublic: Boolean = false
+        val canBeEnterprise: Boolean = false
+        val canBeOrg: Boolean = false
+        val canBePrivate: Boolean = false
+        val canInvite: Boolean = false
+
+    }
+
+    class Membership {
+
+        val id: String = ""
+        val idMember: String = ""
+        val memberType: String = ""
+        val unconfirmed: Boolean = false
+        val deactivated: Boolean = false
 
     }
 }
