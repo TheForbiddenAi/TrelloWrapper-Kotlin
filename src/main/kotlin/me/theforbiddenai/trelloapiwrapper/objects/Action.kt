@@ -19,7 +19,7 @@ class Action {
     val display = gson.fromJson("", Display::class.java)
     val memberCreator = gson.fromJson("", MemberCreator::class.java)
 
-    fun getBoard() : Board{
+    fun getBoard(): Board {
         val boardUrl = "${trelloApi.baseApiUrl}/actions/$id/board?${trelloApi.credentials}"
         return trelloApi.getBoardInternal(boardUrl)
     }
