@@ -1,16 +1,9 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonParser
-import me.theforbiddenai.trelloapiwrapper.TrelloApi
 import me.theforbiddenai.trelloapiwrapper.utils.DescData
 import me.theforbiddenai.trelloapiwrapper.utils.LimitOptions
 
-private val gson = GsonBuilder().serializeNulls().create()
-
-class Board {
-
-    internal lateinit var trelloApi: TrelloApi
+class Board : TrelloObject() {
 
     val id: String = ""
     val name: String = ""
@@ -19,7 +12,7 @@ class Board {
     val closed: Boolean = false
     val idOrganization: String = ""
     val idEnterprise: String = ""
-    val limits: Limits = Limits()
+    val limits: BoardLimits = BoardLimits()
     val pinned: Boolean = false
     val starred: Boolean = false
     val url: String = ""
@@ -33,30 +26,16 @@ class Board {
     val enterpriseOwned: Boolean = false
 
     fun getLabels(): Array<Label> {
-        val labelUrl = "${trelloApi.baseApiUrl}/boards/$id/labels?${trelloApi.credentials}"
-        val jsonData = trelloApi.httpRequests.getJsonData(labelUrl)
-
-        val jsonLabelArray = JsonParser.parseString(jsonData).asJsonArray
-
-        val labelArray = jsonLabelArray.map { gson.fromJson(it, Label::class.java) }.toTypedArray()
-        labelArray.forEach { it.trelloApi = trelloApi }
-
-        return labelArray
+        val labelsUrl = "${trelloApi.baseApiUrl}/boards/$id/labels?${trelloApi.credentials}"
+        return getObjectArray(labelsUrl)
     }
 
     fun getActions(): Array<Action> {
-        val actionUrl = "${trelloApi.baseApiUrl}/boards/$id/actions?${trelloApi.credentials}"
-        val jsonData = trelloApi.httpRequests.getJsonData(actionUrl)
-
-        val jsonActionArray = JsonParser.parseString(jsonData).asJsonArray
-
-        val actionArray = jsonActionArray.map { gson.fromJson(it, Action::class.java) }.toTypedArray()
-        actionArray.forEach { it.trelloApi = trelloApi }
-
-        return actionArray
+        val actionsUrl = "${trelloApi.baseApiUrl}/boards/$id/actions?${trelloApi.credentials}"
+        return getObjectArray(actionsUrl)
     }
 
-    class Limits {
+    class BoardLimits {
 
         val attachments: AttachmentLimits = AttachmentLimits()
         val boards: BoardLimits = BoardLimits()

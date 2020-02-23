@@ -1,15 +1,9 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
-import com.google.gson.GsonBuilder
 import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
-import me.theforbiddenai.trelloapiwrapper.TrelloApi
 
-private val gson = GsonBuilder().serializeNulls().create()
-
-class Action {
-
-    internal lateinit var trelloApi: TrelloApi
+class Action : TrelloObject() {
 
     val id: String = ""
     val idMemberCreator: String = ""
@@ -21,7 +15,7 @@ class Action {
 
     fun getBoard(): Board {
         val boardUrl = "${trelloApi.baseApiUrl}/actions/$id/board?${trelloApi.credentials}"
-        return trelloApi.getBoardInternal(boardUrl)
+        return getObject(boardUrl)
     }
 
     class Display {

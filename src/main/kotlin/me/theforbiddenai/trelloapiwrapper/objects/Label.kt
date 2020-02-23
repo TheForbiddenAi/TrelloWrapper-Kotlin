@@ -1,45 +1,49 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
-import com.google.gson.GsonBuilder
 import me.theforbiddenai.trelloapiwrapper.TrelloApi
 
-private val gson = GsonBuilder().serializeNulls().create()
+class Label internal constructor() : TrelloObject() {
 
-class Label internal constructor() {
-
-    constructor(name: String, color: String) : this() {
+    constructor(trelloApi: TrelloApi, name: String, color: String) : this() {
+        this.trelloApi = trelloApi
         this.name = name
         this.color = color
     }
-
-    @Transient
-    internal lateinit var trelloApi: TrelloApi
 
     val id: String = ""
     val idBoard: String = ""
     var name: String = ""
     var color: String = ""
 
-    // boardId can not be the shortLink it must be the id
-    fun createLabel(boardId: String, trelloApi: TrelloApi): Label {
-        val urlParams = "name=$name&color=$color&idBoard=$boardId"
-        val url = "${trelloApi.baseApiUrl}/labels?$urlParams&${trelloApi.credentials}"
+    fun update() {
+        if (id.isEmpty()) {
+            throw IllegalArgumentException("Failed to find a tag with the given id")
+        }
 
-        val result = trelloApi.httpRequests.postJsonData(url)
-        val label = gson.fromJson(result, this::class.java)
+        val json = trelloApi.gson.toJson(this)
+        val updateLabelUrl = "${trelloApi.baseApiUrl}/labels/$id?${trelloApi.credentials}"
+
+        trelloApi.httpRequests.putRequest(updateLabelUrl, json)
+    }
+
+    fun create(idBoard: String): Label {
+        val urlParams = "name=$name&color=$color&idBoard=$idBoard"
+        val createLabelUrl = "${trelloApi.baseApiUrl}/labels?$urlParams&${trelloApi.credentials}"
+
+        val result = trelloApi.httpRequests.postRequest(createLabelUrl)
+        val label = trelloApi.gson.fromJson(result, this::class.java)
         label.trelloApi = trelloApi
 
         return label
     }
 
-    fun updateLabel() {
+    fun delete() {
         if (id.isEmpty()) {
             throw IllegalArgumentException("Failed to find a tag with the given id")
         }
 
-        val json = gson.toJson(this)
-        val url = "${trelloApi.baseApiUrl}/labels/$id?${trelloApi.credentials}"
+        val deleteLabelUrl = "${trelloApi.baseApiUrl}/labels/$id?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(deleteLabelUrl)
 
-        trelloApi.httpRequests.putJsonData(url, json)
     }
 }

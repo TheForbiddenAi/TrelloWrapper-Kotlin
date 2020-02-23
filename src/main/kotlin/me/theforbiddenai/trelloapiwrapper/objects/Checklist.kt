@@ -1,13 +1,6 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
-import com.google.gson.GsonBuilder
-import me.theforbiddenai.trelloapiwrapper.TrelloApi
-
-private val gson = GsonBuilder().serializeNulls().create()
-
-class Checklist {
-
-    internal lateinit var trelloApi: TrelloApi
+class Checklist : TrelloObject() {
 
     val id: String = ""
     val name: String = ""

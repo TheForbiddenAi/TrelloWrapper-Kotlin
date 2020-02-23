@@ -1,43 +1,37 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
-import com.google.gson.GsonBuilder
-import me.theforbiddenai.trelloapiwrapper.TrelloApi
 import me.theforbiddenai.trelloapiwrapper.utils.DescData
 
-private val gson = GsonBuilder().serializeNulls().create()
-
-class Card {
-
-    internal lateinit var trelloApi: TrelloApi
+class Card : TrelloObject() {
 
     val id: String = ""
-    val checkItemStates = gson.fromJson("", Array<CheckItemStates>::class.java)
+    val checkItemStates: CheckItemStates = CheckItemStates()
     val closed: Boolean = false
     val dateLastActivity: Boolean = false
     val desc: String = ""
-    val descData = gson.fromJson("", DescData::class.java)
+    val descData: DescData = DescData()
     val dueReminder: Int = 0
     val idBoard: String = ""
     val idList: String = ""
-    val idMembersVoted = gson.fromJson("", Array<String>::class.java)
+    val idMembersVoted: Array<String> = arrayOf()
     val idShort: Int = 0
     val idAttachmentCover: String = ""
-    val idLabels = gson.fromJson("", Array<String>::class.java)
+    val idLabels: Array<String> = arrayOf()
     val manualCoverAttachment: Boolean = false
     val name: String = ""
     val pos: Float = 0F
     val shortLink: String = ""
     val isTemplate: Boolean = false
-    val badges = gson.fromJson("", Badge::class.java)
+    val badges: Badge = Badge()
     val dueComplete: Boolean = false
     val due: String = ""
-    val idChecklists = gson.fromJson("", Array<String>::class.java)
-    val idMembers = gson.fromJson("", Array<String>::class.java)
-    val labels = gson.fromJson("", Array<Label>::class.java)
+    val idChecklists: Array<String> = arrayOf()
+    val idMembers: Array<String> = arrayOf()
+    val labels: Array<Label> = arrayOf()
     val shortUrl: String = ""
     val subscribed: Boolean = false
     val url: String = ""
-    val cover = gson.fromJson("", Cover::class.java)
+    val cover: Cover = Cover()
 
     class CheckItemStates {
         val idCheckItem: String = ""
@@ -46,7 +40,7 @@ class Card {
 
     class Badge {
 
-        val attachmentsByType = gson.fromJson("", AttachmentsByType::class.java)
+        val attachmentsByType = AttachmentsByType()
         val board: Int = 0
         val votes: Int = 0
         val viewingMemberVoted: Boolean = false
@@ -62,7 +56,7 @@ class Card {
 
         class AttachmentsByType {
 
-            val trello = gson.fromJson("", Trello::class.java)
+            val trello = Trello()
 
             class Trello {
 

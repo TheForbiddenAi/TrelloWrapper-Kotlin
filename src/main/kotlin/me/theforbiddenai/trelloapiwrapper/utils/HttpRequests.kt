@@ -11,13 +11,13 @@ import com.google.gson.JsonParser
 class HttpRequests {
 
     /**
-     * Retrieves the json data from the given url
+     * Retrieves data from the given url
      *
-     * @param url The url the json data is coming from
-     * @return The found json data in the form of a string
+     * @param url The url the data is coming from
+     * @return The found data in the form of a string
      */
-    internal fun getJsonData(url: String): String {
-        val (_, response, result) = url.httpGet().responseString()
+    internal fun getRequest(url: String): String {
+        val (_, _, result) = url.httpGet().responseString()
 
         return when (result) {
             is Result.Success -> {
@@ -38,7 +38,7 @@ class HttpRequests {
      * @param payload The payload being sent to the url
      * @return The found json data in the form of a string
      */
-    internal fun postJsonData(url: String): String {
+    internal fun postRequest(url: String): String {
         val (_, response, result) = url.httpPost().responseString()
 
         return when (result) {
@@ -58,7 +58,7 @@ class HttpRequests {
      *
      * @param url The url the delete request is going to
      */
-    internal fun deleteJsonData(url: String) {
+    internal fun deleteRequest(url: String) {
         val (_, response, result) = url.httpDelete().responseString()
 
         if (result is Result.Failure) {
@@ -73,7 +73,7 @@ class HttpRequests {
      * @param url The url the payload is going to
      * @param payload The payload being sent to the url
      */
-    internal fun putJsonData(url: String, payload: String) {
+    internal fun putRequest(url: String, payload: String) {
         val (_, response, result) = url.httpPut()
             .header("Content-Type" to "application/json")
             .body(payload)

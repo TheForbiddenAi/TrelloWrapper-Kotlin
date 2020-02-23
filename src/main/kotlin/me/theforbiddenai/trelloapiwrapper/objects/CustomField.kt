@@ -1,13 +1,6 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
-import com.google.gson.GsonBuilder
-import me.theforbiddenai.trelloapiwrapper.TrelloApi
-
-private val gson = GsonBuilder().serializeNulls().create()
-
-class CustomField {
-
-    internal lateinit var trelloApi: TrelloApi
+class CustomField : TrelloObject() {
 
     val id: String = ""
     val idModel: String = ""
