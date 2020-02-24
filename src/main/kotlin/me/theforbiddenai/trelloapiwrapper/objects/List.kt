@@ -61,6 +61,25 @@ class List internal constructor() : TrelloObject() {
         return list
     }
 
+    fun archiveAllCards() {
+        val archiveCardsUrl = "${trelloApi.baseApiUrl}/lists/$id/archiveAllCards?${trelloApi.credentials}"
+        trelloApi.httpRequests.postRequest(archiveCardsUrl)
+    }
+
+    /**
+     * Moves all cards to a given list on a given board
+     *
+     * @param idList The id of the list that the cards are being moved to
+     * @param idBoard The id of the board that the list the cards are being moved to are on
+     */
+    fun moveAllCards(idList: String, idBoard: String = this.idBoard) {
+        val urlParams = "idBoard=$idBoard&idList=$idList"
+
+        val moveCardsUrl = "${trelloApi.baseApiUrl}/lists/$id/moveAllCards?$urlParams&${trelloApi.credentials}"
+        println(moveCardsUrl)
+        trelloApi.httpRequests.postRequest(moveCardsUrl)
+    }
+
     class ListLimits {
 
         val cards: CardLimits = CardLimits()

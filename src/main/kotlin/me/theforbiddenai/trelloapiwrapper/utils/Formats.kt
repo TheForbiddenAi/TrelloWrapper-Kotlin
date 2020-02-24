@@ -2,9 +2,9 @@ package me.theforbiddenai.trelloapiwrapper.utils
 
 class LimitOptions {
 
-    val status: String = ""
-    val disableAt: Int = 0
-    val warnAt: Int = 0
+    val status: String = "null"
+    val disableAt: Int = -1
+    val warnAt: Int = -1
 
 }
 

@@ -12,11 +12,11 @@ class Board : TrelloObject() {
     val closed: Boolean = false
     val idOrganization: String = ""
     val idEnterprise: String = ""
-    val limits: BoardLimits = BoardLimits()
+    val limits: BLimits = BLimits()
     val pinned: Boolean = false
     val starred: Boolean = false
     val url: String = ""
-    val prefs: Prefs = Prefs()
+    val prefs: BoardPrefs = BoardPrefs()
     val memberships: Array<Membership> = arrayOf()
     val subscribed: String = ""
     val labelNames: Map<String, String> = mapOf()
@@ -35,7 +35,9 @@ class Board : TrelloObject() {
         return getObjectArray(actionsUrl)
     }
 
-    class BoardLimits {
+    // TODO: Implement the rest of the get, put, and delete functions
+
+    class BLimits {
 
         val attachments: AttachmentLimits = AttachmentLimits()
         val boards: BoardLimits = BoardLimits()
@@ -122,7 +124,7 @@ class Board : TrelloObject() {
 
     }
 
-    class Prefs {
+    class BoardPrefs {
 
         val permissionLevel: String = ""
         val hideVotes: Boolean = false

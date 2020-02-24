@@ -5,7 +5,7 @@ import me.theforbiddenai.trelloapiwrapper.utils.DescData
 class Card : TrelloObject() {
 
     val id: String = ""
-    val checkItemStates: CheckItemStates = CheckItemStates()
+    val checkItemStates: Array<CheckItemStates> = arrayOf()
     val closed: Boolean = false
     val dateLastActivity: Boolean = false
     val desc: String = ""
@@ -32,6 +32,8 @@ class Card : TrelloObject() {
     val subscribed: Boolean = false
     val url: String = ""
     val cover: Cover = Cover()
+
+    // TODO: Implement the rest of the get, put, and delete functions
 
     class CheckItemStates {
         val idCheckItem: String = ""

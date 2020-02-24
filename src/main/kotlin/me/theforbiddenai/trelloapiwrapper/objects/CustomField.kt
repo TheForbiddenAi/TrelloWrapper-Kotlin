@@ -12,6 +12,8 @@ class CustomField : TrelloObject() {
     val options: Array<Option> = arrayOf()
     val type: String = ""
 
+    // TODO: Implement the rest of the get, put, and delete functions
+
     class Display {
 
         val cardFront: Boolean = false

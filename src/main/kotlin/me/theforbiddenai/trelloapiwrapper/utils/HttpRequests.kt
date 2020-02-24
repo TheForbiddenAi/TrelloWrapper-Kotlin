@@ -7,6 +7,7 @@ import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.httpPut
 import com.github.kittinunf.result.Result
 import com.google.gson.JsonParser
+import org.jsoup.Jsoup
 
 class HttpRequests {
 
@@ -92,10 +93,19 @@ class HttpRequests {
      * @return The found error string
      */
     private fun getErrorMessage(response: Response): String {
-        val errorJsonString = response.data.toString(Charsets.UTF_8)
-        val errorJsonObject = JsonParser.parseString(errorJsonString).asJsonObject
+        val errorResponseString = response.data.toString(Charsets.UTF_8)
 
-        return errorJsonObject.get("message").asString.capitalize()
+        return if (errorResponseString.matches("\\{.*}".toRegex())) {
+            val errorJsonObject = JsonParser.parseString(errorResponseString).asJsonObject
+            errorJsonObject.get("message").asString.capitalize()
+        } else {
+            val htmlDoc = Jsoup.parse(errorResponseString)
+            val errorMessage = htmlDoc.selectFirst("p").text()
+
+            val parsedError = "“.*”".toRegex().find(errorMessage)?.value ?: return "Bad Request"
+            parsedError.substring(1, parsedError.length - 1).capitalize()
+        }
+
     }
 
 }

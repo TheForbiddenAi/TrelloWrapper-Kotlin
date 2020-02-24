@@ -61,6 +61,11 @@ class TrelloApi(
         return getObject(labelUrl)
     }
 
+    fun getMember(memberId: String): Member {
+        val memberUrl = "$baseApiUrl/members/$memberId?fields=all&$credentials"
+        return getObject(memberUrl)
+    }
+
     /**
      * Deserializes the json from a given url into a given class that inherits from TrelloObject
      *
