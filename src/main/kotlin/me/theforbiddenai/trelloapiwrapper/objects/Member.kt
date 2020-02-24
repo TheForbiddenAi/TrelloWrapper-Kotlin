@@ -1,6 +1,7 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
 import me.theforbiddenai.trelloapiwrapper.utils.LimitOptions
+import java.util.*
 
 class Member : TrelloObject() {
 
@@ -56,12 +57,12 @@ class Member : TrelloObject() {
         return getObject(boardBackgroundUrl)
     }
 
-    fun getBoardStars(): Array<BoardStar> {
+    fun getBoardStars(): Array<MemberBoardStar> {
         val boardStarsUrl = "${trelloApi.baseApiUrl}/members/$id/boardStars?${trelloApi.credentials}"
         return getObjectArray(boardStarsUrl)
     }
 
-    fun getBoardStar(idStar: String): BoardStar {
+    fun getBoardStar(idStar: String): MemberBoardStar {
         val boardStarUrl = "${trelloApi.baseApiUrl}/members/$id/boardStars/$idStar?${trelloApi.credentials}"
         return getObject(boardStarUrl)
     }
@@ -106,7 +107,7 @@ class Member : TrelloObject() {
 
     class MarketingOptIn {
         val optedIn: Boolean = false
-        val date: String = ""
+        val date: Date = Date()
     }
 
     class MemberPrefs {
@@ -132,7 +133,7 @@ class Member : TrelloObject() {
         val color: String = ""
     }
 
-    class BoardStar : TrelloObject() {
+    class MemberBoardStar : TrelloObject() {
         val id: String = ""
         val idBoard: String = ""
         val pos: Float = 0F

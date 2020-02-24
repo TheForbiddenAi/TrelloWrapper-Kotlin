@@ -19,11 +19,7 @@ class TrelloApi(
 
     fun getAction(actionId: String): Action {
         val actionUrl = "$baseApiUrl/actions/$actionId?$credentials"
-
-        val action = getObject<Action>(actionUrl)
-        action.display.entities = gson.fromJson(action.display.rawEntities, Action.Display.Entities::class.java)
-
-        return action
+        return getObject(actionUrl)
     }
 
     fun getBoard(boardId: String): Board {
@@ -66,6 +62,21 @@ class TrelloApi(
         return getObject(memberUrl)
     }
 
+    fun getNotification(notificationId: String): Notification {
+        val notificationUrl = "$baseApiUrl/notifications/$notificationId?$credentials"
+        return getObject(notificationUrl)
+    }
+
+    fun getOrganization(organizationId: String): Organization {
+        val notificationUrl = "$baseApiUrl/organizations/$organizationId?fields=all&$credentials"
+        return getObject(notificationUrl)
+    }
+
+    fun getReactions(actionId: String): Array<Reaction> {
+        val notificationUrl = "$baseApiUrl/actions/$actionId/reactions?$credentials"
+        return getObjectArray(notificationUrl)
+    }
+
     /**
      * Deserializes the json from a given url into a given class that inherits from TrelloObject
      *
@@ -86,6 +97,25 @@ class TrelloApi(
         trelloObject.trelloApi = this
 
         return trelloObject
+    }
+
+    /**
+     * Deserializes the json from a given url into an array of the given class that inherits from TrelloObject
+     *
+     * @param url The object's url
+     * @return An array of the found trello objects
+     */
+    internal inline fun <reified T : TrelloObject> getObjectArray(url: String): Array<T> {
+        val jsonData = httpRequests.getRequest(url)
+
+        return try {
+            val objectArray: Array<T> = gson.fromJson(jsonData, arrayOf<T>()::class.java)
+            objectArray.forEach { it.trelloApi = this }
+
+            objectArray
+        } catch (ex: IllegalStateException) {
+            emptyArray()
+        }
     }
 
 

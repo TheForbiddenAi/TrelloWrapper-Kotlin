@@ -2,6 +2,7 @@ package me.theforbiddenai.trelloapiwrapper.objects
 
 import me.theforbiddenai.trelloapiwrapper.utils.DescData
 import me.theforbiddenai.trelloapiwrapper.utils.LimitOptions
+import java.util.*
 
 class Board : TrelloObject() {
 
@@ -20,22 +21,58 @@ class Board : TrelloObject() {
     val memberships: Array<Membership> = arrayOf()
     val subscribed: String = ""
     val labelNames: Map<String, String> = mapOf()
-    val dateLastActivity: String = ""
-    val dateLastView: String = ""
+    val dateLastActivity: Date = Date()
+    val dateLastView: Date = Date()
     val shortUrl: String = ""
     val enterpriseOwned: Boolean = false
-
-    fun getLabels(): Array<Label> {
-        val labelsUrl = "${trelloApi.baseApiUrl}/boards/$id/labels?${trelloApi.credentials}"
-        return getObjectArray(labelsUrl)
-    }
 
     fun getActions(): Array<Action> {
         val actionsUrl = "${trelloApi.baseApiUrl}/boards/$id/actions?${trelloApi.credentials}"
         return getObjectArray(actionsUrl)
     }
 
-    // TODO: Implement the rest of the get, put, and delete functions
+    fun getBoardStars(): Array<BoardStar> {
+        val boardStarsUrl = "${trelloApi.baseApiUrl}/boards/$id/boardStars?${trelloApi.credentials}"
+        return getObjectArray(boardStarsUrl)
+    }
+
+    fun getCards(): Array<Card> {
+        val cardsUrl = "${trelloApi.baseApiUrl}/boards/$id/cards?${trelloApi.credentials}"
+        return getObjectArray(cardsUrl)
+    }
+
+    fun getCard(cardId: String): Card {
+        val cardUrl = "${trelloApi.baseApiUrl}/boards/$id/cards/$cardId?${trelloApi.credentials}"
+        return getObject(cardUrl)
+    }
+
+    fun getChecklists(): Array<Checklist> {
+        val checklistsUrl = "${trelloApi.baseApiUrl}/boards/$id/checklists?${trelloApi.credentials}"
+        return getObjectArray(checklistsUrl)
+    }
+
+    fun getCustomFields(): Array<CustomField> {
+        val customFieldsUrl = "${trelloApi.baseApiUrl}/boards/$id/customFields?${trelloApi.credentials}"
+        return getObjectArray(customFieldsUrl)
+    }
+
+    fun getLabels(): Array<Label> {
+        val labelsUrl = "${trelloApi.baseApiUrl}/boards/$id/labels?${trelloApi.credentials}"
+        return getObjectArray(labelsUrl)
+    }
+
+    fun getLists(): Array<List> {
+        val listsUrl = "${trelloApi.baseApiUrl}/boards/$id/lists?${trelloApi.credentials}"
+        return getObjectArray(listsUrl)
+    }
+
+    fun getMembers(): Array<Member> {
+        val membersUrl = "${trelloApi.baseApiUrl}/boards/$id/members?${trelloApi.credentials}"
+        return getObjectArray(membersUrl)
+    }
+
+
+    // TODO: Implement the rest of the put and delete functions
 
     class BLimits {
 
@@ -151,7 +188,19 @@ class Board : TrelloObject() {
 
     }
 
-    class Membership {
+    class BoardStar : TrelloObject() {
+        val id: String = ""
+        val idBoard: String = ""
+        val pos: Float = 0F
+
+        class StarObject {
+            val _id: String = ""
+            val idBoard: String = ""
+            val pos: Float = 0F
+        }
+    }
+
+    class Membership : TrelloObject() {
 
         val id: String = ""
         val idMember: String = ""
@@ -160,4 +209,5 @@ class Board : TrelloObject() {
         val deactivated: Boolean = false
 
     }
+
 }

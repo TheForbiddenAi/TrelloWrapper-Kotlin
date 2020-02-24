@@ -1,72 +1,93 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
-import com.google.gson.JsonObject
-import com.google.gson.annotations.SerializedName
+import me.theforbiddenai.trelloapiwrapper.utils.DataObject
+import me.theforbiddenai.trelloapiwrapper.utils.ShortMember
+import java.util.*
 
 class Action : TrelloObject() {
 
     val id: String = ""
     val idMemberCreator: String = ""
-    val data: JsonObject = JsonObject()
+    val data: DataObject = DataObject()
     val type: String = ""
-    val date: String = ""
+    val date: Date = Date()
     val display: Display = Display()
-    val memberCreator: MemberCreator = MemberCreator()
+    val memberCreator: ShortMember = ShortMember()
 
     fun getBoard(): Board {
         val boardUrl = "${trelloApi.baseApiUrl}/actions/$id/board?${trelloApi.credentials}"
         return getObject(boardUrl)
     }
 
-    // TODO: Implement the rest of the get, put, and delete functions
+    fun getCard(): Card {
+        val cardUrl = "${trelloApi.baseApiUrl}/actions/$id/card?${trelloApi.credentials}"
+        return getObject(cardUrl)
+    }
+
+    fun getList(): List {
+        val listUrl = "${trelloApi.baseApiUrl}/actions/$id/list?${trelloApi.credentials}"
+        return getObject(listUrl)
+    }
+
+    fun getMember(): Member {
+        val listUrl = "${trelloApi.baseApiUrl}/actions/$id/member?${trelloApi.credentials}"
+        return getObject(listUrl)
+    }
+
+    fun getMemberCreator(): Member {
+        val listUrl = "${trelloApi.baseApiUrl}/actions/$id/member?${trelloApi.credentials}"
+        return getObject(listUrl)
+    }
+
+    fun getOrganization(): Organization {
+        val listUrl = "${trelloApi.baseApiUrl}/actions/$id/organization?${trelloApi.credentials}"
+        return getObject(listUrl)
+    }
+
+    fun updateComment(commentText: String) {
+        val json = trelloApi.gson.toJson(this)
+
+        val urlParams = "text=$commentText"
+        val updateActionUrl = "${trelloApi.baseApiUrl}/actions/$id?$urlParams&${trelloApi.credentials}"
+
+        trelloApi.httpRequests.putRequest(updateActionUrl, json)
+    }
+
+    fun deleteComment() {
+        val updateActionUrl = "${trelloApi.baseApiUrl}/actions/$id?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(updateActionUrl)
+    }
+
 
     class Display {
 
         val translationKey: String = ""
-
-        @SerializedName("entities")
-        val rawEntities: JsonObject = JsonObject()
-
-        @Transient
-        var entities: Entities = Entities()
-            internal set
+        val entities: Entities = Entities()
 
         class Entities {
 
-            val board: EntityBoard = EntityBoard()
-            val memberCreator: EntityMemberCreator = EntityMemberCreator()
+            val board: LimitDisplayView = LimitDisplayView()
+            val memberCreator: LimitDisplayView = LimitDisplayView()
+            val card: LimitDisplayView = LimitDisplayView()
+            val cardSource: LimitDisplayView = LimitDisplayView()
+            val comment: LimitDisplayView = LimitDisplayView()
+            val list: LimitDisplayView = LimitDisplayView()
+            val listBefore: LimitDisplayView = LimitDisplayView()
+            val listAfter: LimitDisplayView = LimitDisplayView()
+            val customField: LimitDisplayView = LimitDisplayView()
+            val customFieldItem: LimitDisplayView = LimitDisplayView()
+            val checkitem: LimitDisplayView = LimitDisplayView()
+            val checklist: LimitDisplayView = LimitDisplayView()
+            val plugin: LimitDisplayView = LimitDisplayView()
+            val attachment: LimitDisplayView = LimitDisplayView()
+            val name: LimitDisplayView = LimitDisplayView()
 
-            class EntityBoard {
-
+            class LimitDisplayView {
                 val type: String = ""
                 val id: String = ""
                 val text: String = ""
-                val shortLink: String = ""
-
-            }
-
-            class EntityMemberCreator {
-
-                val type: String = ""
-                val id: String = ""
-                val username: String = ""
-                val text: String = ""
-
             }
         }
-    }
-
-    class MemberCreator {
-
-        val id: String = ""
-        val activityBlocked: Boolean = false
-        val avatarHash: String = ""
-        val avatarUrl: String = ""
-        val fullName: String = ""
-        val idMemberReferrer: String = ""
-        val initials: String = ""
-        val username: String = ""
-
     }
 
 }

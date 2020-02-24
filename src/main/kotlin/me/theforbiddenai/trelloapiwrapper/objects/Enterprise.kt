@@ -10,7 +10,7 @@ class Enterprise : TrelloObject() {
     val idAdmins: Array<String> = arrayOf()
     val idMembers: Array<String> = arrayOf()
     val idOrganizations: Array<String> = arrayOf()
-    val products: Array<String> = arrayOf()
+    val products: Array<Int> = arrayOf()
     val userTypes: UserTypes = UserTypes()
 
     fun getAdmins(): Array<Member> {

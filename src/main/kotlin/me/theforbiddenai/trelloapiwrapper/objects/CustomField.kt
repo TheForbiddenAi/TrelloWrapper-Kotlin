@@ -24,11 +24,11 @@ class CustomField : TrelloObject() {
 
         val id: String = ""
         val idCustomField: String = ""
-        val value = Value()
+        val value = OptionValue()
         val color: String = ""
         val pos: Float = 0F
 
-        class Value {
+        class OptionValue {
             val text: String = ""
         }
 
