@@ -1,5 +1,6 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
+import com.google.gson.JsonObject
 import me.theforbiddenai.trelloapiwrapper.utils.DescData
 import me.theforbiddenai.trelloapiwrapper.utils.LimitOptions
 import java.util.*
@@ -7,11 +8,11 @@ import java.util.*
 class Board : TrelloObject() {
 
     val id: String = ""
-    val name: String = ""
-    val desc: String = ""
+    var name: String = ""
+    var desc: String = ""
     val descData: DescData = DescData()
-    val closed: Boolean = false
-    val idOrganization: String = ""
+    var closed: Boolean = false
+    var idOrganization: String = ""
     val idEnterprise: String = ""
     val limits: BLimits = BLimits()
     val pinned: Boolean = false
@@ -20,7 +21,7 @@ class Board : TrelloObject() {
     val prefs: BoardPrefs = BoardPrefs()
     val memberships: Array<Membership> = arrayOf()
     val subscribed: String = ""
-    val labelNames: Map<String, String> = mapOf()
+    val labelNames: DefaultLabels = DefaultLabels()
     val dateLastActivity: Date = Date()
     val dateLastView: Date = Date()
     val shortUrl: String = ""
@@ -71,6 +72,30 @@ class Board : TrelloObject() {
         return getObjectArray(membersUrl)
     }
 
+    fun updateBoard() {
+        val json = trelloApi.gson.toJson(this)
+        val updateBoardUrl = "${trelloApi.baseApiUrl}/boards/$id?${trelloApi.credentials}"
+
+        trelloApi.httpRequests.putRequest(updateBoardUrl, json)
+    }
+
+    fun updatePrefs(prefEnum: BoardPrefNames, value: Any) {
+        val jsonObject = JsonObject()
+
+        when (value) {
+            is Boolean -> jsonObject.addProperty("value", value)
+            is String -> jsonObject.addProperty("value", value)
+            is Int -> jsonObject.addProperty("value", value)
+            is Char -> jsonObject.addProperty("value", value)
+            else -> throw IllegalArgumentException("Value must be of type String, Integer, Char, or Boolean!")
+        }
+
+        val prefNameString = prefEnum.prefName
+        val updatePrefsUrl = "${trelloApi.baseApiUrl}/boards/$id/prefs/$prefNameString?${trelloApi.credentials}"
+
+        val jsonString = jsonObject.toString()
+        trelloApi.httpRequests.putRequest(updatePrefsUrl, jsonString)
+    }
 
     // TODO: Implement the rest of the put and delete functions
 
@@ -188,6 +213,19 @@ class Board : TrelloObject() {
 
     }
 
+    class DefaultLabels {
+        var green: String = ""
+        var yellow: String = ""
+        var orange: String = ""
+        var red: String = ""
+        var purple: String = ""
+        var blue: String = ""
+        var sky: String = ""
+        var lime: String = ""
+        var pink: String = ""
+        var black: String = ""
+    }
+
     class BoardStar : TrelloObject() {
         val id: String = ""
         val idBoard: String = ""
@@ -208,6 +246,19 @@ class Board : TrelloObject() {
         val unconfirmed: Boolean = false
         val deactivated: Boolean = false
 
+    }
+
+    enum class BoardPrefNames(val prefName: String) {
+        PERMISSION_LEVEL("permissionLevel"),
+        SELF_JOIN("selfJoin"),
+        CARD_COVERS("cardCovers"),
+        HIDE_VOTES("hideVotes"),
+        INVITATIONS("invitations"),
+        VOTING("voting"),
+        COMMENTS("comments"),
+        BACKGROUND("background"),
+        CARD_AGING("cardAging"),
+        CALENDAR_FEED_ENABLED("calendarFeedEnabled");
     }
 
 }

@@ -16,10 +16,6 @@ class Label internal constructor() : TrelloObject() {
     var color: String = ""
 
     fun update() {
-        if (id.isEmpty()) {
-            throw IllegalArgumentException("Failed to find a tag with the given id")
-        }
-
         val json = trelloApi.gson.toJson(this)
         val updateLabelUrl = "${trelloApi.baseApiUrl}/labels/$id?${trelloApi.credentials}"
 

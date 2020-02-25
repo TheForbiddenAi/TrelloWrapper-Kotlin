@@ -100,9 +100,10 @@ class HttpRequests {
             errorJsonObject.get("message").asString.capitalize()
         } else {
             val htmlDoc = Jsoup.parse(errorResponseString)
-            val errorMessage = htmlDoc.selectFirst("p").text()
 
+            val errorMessage = htmlDoc.selectFirst("p")?.text() ?: return errorResponseString
             val parsedError = "“.*”".toRegex().find(errorMessage)?.value ?: return "Bad Request"
+
             parsedError.substring(1, parsedError.length - 1).capitalize()
         }
 
