@@ -1,11 +1,16 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
-import com.google.gson.JsonObject
+import me.theforbiddenai.trelloapiwrapper.TrelloApi
 import me.theforbiddenai.trelloapiwrapper.utils.DescData
 import me.theforbiddenai.trelloapiwrapper.utils.LimitOptions
 import java.util.*
 
-class Board : TrelloObject() {
+class Board internal constructor() : TrelloObject() {
+
+    constructor(trelloApi: TrelloApi, name: String) : this() {
+        this.trelloApi = trelloApi
+        this.name = name
+    }
 
     val id: String = ""
     var name: String = ""
@@ -72,6 +77,11 @@ class Board : TrelloObject() {
         return getObjectArray(membersUrl)
     }
 
+    fun getMyPrefs(): MyPrefs {
+        val myPrefsUrl = "${trelloApi.baseApiUrl}/boards/$id/myprefs?${trelloApi.credentials}"
+        return getObject(myPrefsUrl)
+    }
+
     fun updateBoard() {
         val json = trelloApi.gson.toJson(this)
         val updateBoardUrl = "${trelloApi.baseApiUrl}/boards/$id?${trelloApi.credentials}"
@@ -80,24 +90,97 @@ class Board : TrelloObject() {
     }
 
     fun updatePrefs(prefEnum: BoardPrefNames, value: Any) {
-        val jsonObject = JsonObject()
+        val permOptionUrlParams = "${prefEnum.prefName}?value=$value"
+        val updatePrefsUrl = "${trelloApi.baseApiUrl}/boards/$id/prefs/$permOptionUrlParams&${trelloApi.credentials}"
 
-        when (value) {
-            is Boolean -> jsonObject.addProperty("value", value)
-            is String -> jsonObject.addProperty("value", value)
-            is Int -> jsonObject.addProperty("value", value)
-            is Char -> jsonObject.addProperty("value", value)
-            else -> throw IllegalArgumentException("Value must be of type String, Integer, Char, or Boolean!")
-        }
-
-        val prefNameString = prefEnum.prefName
-        val updatePrefsUrl = "${trelloApi.baseApiUrl}/boards/$id/prefs/$prefNameString?${trelloApi.credentials}"
-
-        val jsonString = jsonObject.toString()
-        trelloApi.httpRequests.putRequest(updatePrefsUrl, jsonString)
+        trelloApi.httpRequests.putRequest(updatePrefsUrl)
     }
 
-    // TODO: Implement the rest of the put and delete functions
+    fun inviteMemberByEmail(email: String, userType: UserPermTypes, fullName: String) {
+        val lowercaseType = userType.toString().toLowerCase()
+
+        val urlParams = "email=$email&type=${lowercaseType}&fullName=$fullName"
+        val inviteMemberUrl = "${trelloApi.baseApiUrl}/boards/$id/members?$urlParams&${trelloApi.credentials}"
+
+        trelloApi.httpRequests.putRequest(inviteMemberUrl)
+    }
+
+    fun inviteMemberById(memberId: String, userType: UserPermTypes, allowBillableGuest: Boolean = false) {
+        val lowercaseType = userType.toString().toLowerCase()
+
+        val urlParams = "type=${lowercaseType}&allowBillableGuest=${allowBillableGuest}"
+        val inviteMemberByIdUrl =
+            "${trelloApi.baseApiUrl}/boards/$id/members/$memberId?$urlParams&${trelloApi.credentials}"
+
+        trelloApi.httpRequests.putRequest(inviteMemberByIdUrl)
+    }
+
+    fun updateMyPrefs(prefName: MyPrefNames, value: Any) {
+        val urlParams = "value=$value"
+        val updateMyPrefsUrl =
+            "${trelloApi.baseApiUrl}/boards/$id/myprefs/${prefName.prefName}?$urlParams&${trelloApi.credentials}"
+
+        println(updateMyPrefsUrl)
+        trelloApi.httpRequests.putRequest(updateMyPrefsUrl)
+    }
+
+    fun createBoard(): Board {
+        val urlParams = "name=$name&defaultLists=false"
+        val createBoardUrl = "${trelloApi.baseApiUrl}/boards?$urlParams&${trelloApi.credentials}"
+        val result = trelloApi.httpRequests.postRequest(createBoardUrl)
+
+        return createObjectFromJson(result)
+    }
+
+    fun enablePlugin(pluginId: String) {
+        val urlParams = "idPlugin=$pluginId"
+        val enablePluginUrl = "${trelloApi.baseApiUrl}/boards/$id/boardPlugins?$urlParams&${trelloApi.credentials}"
+
+        trelloApi.httpRequests.postRequest(enablePluginUrl)
+    }
+
+    fun addTag(tagId: String) {
+        val addTagUrl = "${trelloApi.baseApiUrl}/boards/$id/idTags/?value=$tagId&${trelloApi.credentials}"
+        trelloApi.httpRequests.postRequest(addTagUrl)
+    }
+
+    fun createLabel(name: String, color: String): Label {
+        val urlParams = "name=$name&color=$color"
+        val createLabelUrl = "${trelloApi.baseApiUrl}/boards/$id/labels?$urlParams&${trelloApi.credentials}"
+
+        val result = trelloApi.httpRequests.postRequest(createLabelUrl)
+        return createObjectFromJson(result)
+    }
+
+    fun createList(name: String, pos: String = "top"): List {
+        val urlParams = "name=$name&pos=$pos"
+        val createListUrl = "${trelloApi.baseApiUrl}/boards/$id/lists?$urlParams&${trelloApi.credentials}"
+
+        val result = trelloApi.httpRequests.postRequest(createListUrl)
+        return createObjectFromJson(result)
+    }
+
+    fun markAsViewed() {
+        val markAsReadUrl = "${trelloApi.baseApiUrl}/boards/$id/markAsViewed?${trelloApi.credentials}"
+        trelloApi.httpRequests.postRequest(markAsReadUrl)
+    }
+
+    fun deleteBoard() {
+        val deleteBoardUrl = "${trelloApi.baseApiUrl}/boards/$id?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(deleteBoardUrl)
+    }
+
+    fun disablePlugin(pluginId: String) {
+        val urlParams = "idPlugin=$pluginId"
+        val enablePluginUrl = "${trelloApi.baseApiUrl}/boards/$id/boardPlugins?$urlParams&${trelloApi.credentials}"
+
+        trelloApi.httpRequests.deleteRequest(enablePluginUrl)
+    }
+
+    fun removeMember(memberId: String) {
+        val removeMemberUrl = "${trelloApi.baseApiUrl}/boards/$id/members/$memberId?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(removeMemberUrl)
+    }
 
     class BLimits {
 
@@ -213,6 +296,16 @@ class Board : TrelloObject() {
 
     }
 
+    class MyPrefs : TrelloObject() {
+        val showSidebar: Boolean = false
+        val showSidebarMembers: Boolean = false
+        val showSidebarBoardActions: Boolean = false
+        val showSidebarActivity: Boolean = false
+        val showListGuide: Boolean = false
+        val idEmailList: String = ""
+        val emailPosition: String = ""
+    }
+
     class DefaultLabels {
         var green: String = ""
         var yellow: String = ""
@@ -248,17 +341,33 @@ class Board : TrelloObject() {
 
     }
 
-    enum class BoardPrefNames(val prefName: String) {
-        PERMISSION_LEVEL("permissionLevel"),
-        SELF_JOIN("selfJoin"),
-        CARD_COVERS("cardCovers"),
-        HIDE_VOTES("hideVotes"),
-        INVITATIONS("invitations"),
-        VOTING("voting"),
-        COMMENTS("comments"),
-        BACKGROUND("background"),
-        CARD_AGING("cardAging"),
-        CALENDAR_FEED_ENABLED("calendarFeedEnabled");
-    }
+}
 
+enum class BoardPrefNames(internal val prefName: String) {
+    PERMISSION_LEVEL("permissionLevel"),
+    SELF_JOIN("selfJoin"),
+    CARD_COVERS("cardCovers"),
+    HIDE_VOTES("hideVotes"),
+    INVITATIONS("invitations"),
+    VOTING("voting"),
+    COMMENTS("comments"),
+    BACKGROUND("background"),
+    CARD_AGING("cardAging"),
+    CALENDAR_FEED_ENABLED("calendarFeedEnabled")
+}
+
+enum class UserPermTypes {
+    ADMIN,
+    NORMAL,
+    OBSERVER
+}
+
+enum class MyPrefNames(internal val prefName: String) {
+    EMAIL_POSITION("emailPosition"),
+    ID_EMAIL_LIST("idEmailList"),
+    SHOW_LIST_GUIDE("showListGuide"),
+    SHOW_SIDEBAR("showSidebar"),
+    SHOW_SIDEBAR_ACTIVITY("showSidebarActivity"),
+    SHOW_SIDEBAR_BOARD_ACTIONS("showSidebarBoardActions"),
+    SHOW_SIDEBAR_MEMBERS("showSidebarMembers")
 }

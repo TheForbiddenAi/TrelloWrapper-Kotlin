@@ -15,4 +15,11 @@ abstract class TrelloObject {
         return trelloApi.getObjectArray(url)
     }
 
+    internal inline fun <reified T : TrelloObject> createObjectFromJson(json: String): T {
+        val trelloObject = trelloApi.gson.fromJson(json, T::class.java)
+        trelloObject.trelloApi = trelloApi
+
+        return trelloObject
+    }
+
 }

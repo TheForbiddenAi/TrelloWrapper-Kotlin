@@ -74,7 +74,7 @@ class HttpRequests {
      * @param url The url the payload is going to
      * @param payload The payload being sent to the url
      */
-    internal fun putRequest(url: String, payload: String) {
+    internal fun putRequest(url: String, payload: String = "") {
         val (_, response, result) = url.httpPut()
             .header("Content-Type" to "application/json")
             .body(payload)

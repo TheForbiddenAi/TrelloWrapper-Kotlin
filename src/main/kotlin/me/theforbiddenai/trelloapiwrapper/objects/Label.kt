@@ -25,12 +25,9 @@ class Label internal constructor() : TrelloObject() {
     fun create(idBoard: String): Label {
         val urlParams = "name=$name&color=$color&idBoard=$idBoard"
         val createLabelUrl = "${trelloApi.baseApiUrl}/labels?$urlParams&${trelloApi.credentials}"
-
         val result = trelloApi.httpRequests.postRequest(createLabelUrl)
-        val label = trelloApi.gson.fromJson(result, this::class.java)
-        label.trelloApi = trelloApi
 
-        return label
+        return createObjectFromJson(result)
     }
 
     fun delete() {
