@@ -90,3 +90,7 @@ class DataObject {
         val desc: String = ""
     }
 }
+
+class OptionValue {
+    val text: String = ""
+}

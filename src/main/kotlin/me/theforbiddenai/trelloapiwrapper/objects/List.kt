@@ -22,17 +22,17 @@ class List internal constructor() : TrelloObject() {
 
     fun getActions(): Array<Action> {
         val actionsUrl = "${trelloApi.baseApiUrl}/lists/$id/actions?${trelloApi.credentials}"
-        return getObjectArray(actionsUrl)
+        return getTrelloObjectArray(actionsUrl)
     }
 
     fun getBoard(): Board {
         val boardUrl = "${trelloApi.baseApiUrl}/lists/$id/board?${trelloApi.credentials}"
-        return getObject(boardUrl)
+        return getTrelloObject(boardUrl)
     }
 
     fun getCards(): Array<Card> {
         val cardsUrl = "${trelloApi.baseApiUrl}/lists/$id/cards?${trelloApi.credentials}"
-        return getObjectArray(cardsUrl)
+        return getTrelloObjectArray(cardsUrl)
     }
 
     fun update() {

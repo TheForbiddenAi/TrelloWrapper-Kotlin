@@ -15,7 +15,7 @@ class Enterprise : TrelloObject() {
 
     fun getAdmins(): Array<Member> {
         val adminsUrl = "${trelloApi.baseApiUrl}/enterprises/$id/admins?${trelloApi.credentials}"
-        return getObjectArray(adminsUrl)
+        return getTrelloObjectArray(adminsUrl)
     }
 
     fun getSignupUrl(
@@ -34,7 +34,7 @@ class Enterprise : TrelloObject() {
 
     fun getMembers(): Array<Member> {
         val membersUrl = "${trelloApi.baseApiUrl}/enterprises/$id/members?${trelloApi.credentials}"
-        return getObjectArray(membersUrl)
+        return getTrelloObjectArray(membersUrl)
     }
 
     // TODO: Implement the rest of the get, put, and delete functions

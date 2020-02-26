@@ -108,14 +108,11 @@ class TrelloApi(
     internal inline fun <reified T : TrelloObject> getObjectArray(url: String): Array<T> {
         val jsonData = httpRequests.getRequest(url)
 
-        return try {
-            val objectArray: Array<T> = gson.fromJson(jsonData, arrayOf<T>()::class.java)
-            objectArray.forEach { it.trelloApi = this }
+        val objectArray: Array<T> = gson.fromJson(jsonData, arrayOf<T>()::class.java) ?: return emptyArray()
+        objectArray.forEach { it.trelloApi = this }
 
-            objectArray
-        } catch (ex: IllegalStateException) {
-            emptyArray()
-        }
+        return objectArray
+
     }
 
 

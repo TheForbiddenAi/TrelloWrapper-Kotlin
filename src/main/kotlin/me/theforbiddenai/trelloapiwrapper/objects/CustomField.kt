@@ -1,5 +1,7 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
+import me.theforbiddenai.trelloapiwrapper.utils.OptionValue
+
 class CustomField : TrelloObject() {
 
     val id: String = ""
@@ -28,9 +30,6 @@ class CustomField : TrelloObject() {
         val color: String = ""
         val pos: Float = 0F
 
-        class OptionValue {
-            val text: String = ""
-        }
 
     }
 }

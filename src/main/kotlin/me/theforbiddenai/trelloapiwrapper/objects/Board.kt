@@ -34,7 +34,7 @@ class Board internal constructor() : TrelloObject() {
 
     fun getActions(): Array<Action> {
         val actionsUrl = "${trelloApi.baseApiUrl}/boards/$id/actions?${trelloApi.credentials}"
-        return getObjectArray(actionsUrl)
+        return getTrelloObjectArray(actionsUrl)
     }
 
     fun getBoardStars(): Array<BoardStar> {
@@ -44,37 +44,37 @@ class Board internal constructor() : TrelloObject() {
 
     fun getCards(): Array<Card> {
         val cardsUrl = "${trelloApi.baseApiUrl}/boards/$id/cards?${trelloApi.credentials}"
-        return getObjectArray(cardsUrl)
+        return getTrelloObjectArray(cardsUrl)
     }
 
     fun getCard(cardId: String): Card {
         val cardUrl = "${trelloApi.baseApiUrl}/boards/$id/cards/$cardId?${trelloApi.credentials}"
-        return getObject(cardUrl)
+        return getTrelloObject(cardUrl)
     }
 
     fun getChecklists(): Array<Checklist> {
         val checklistsUrl = "${trelloApi.baseApiUrl}/boards/$id/checklists?${trelloApi.credentials}"
-        return getObjectArray(checklistsUrl)
+        return getTrelloObjectArray(checklistsUrl)
     }
 
     fun getCustomFields(): Array<CustomField> {
         val customFieldsUrl = "${trelloApi.baseApiUrl}/boards/$id/customFields?${trelloApi.credentials}"
-        return getObjectArray(customFieldsUrl)
+        return getTrelloObjectArray(customFieldsUrl)
     }
 
     fun getLabels(): Array<Label> {
         val labelsUrl = "${trelloApi.baseApiUrl}/boards/$id/labels?${trelloApi.credentials}"
-        return getObjectArray(labelsUrl)
+        return getTrelloObjectArray(labelsUrl)
     }
 
     fun getLists(): Array<List> {
         val listsUrl = "${trelloApi.baseApiUrl}/boards/$id/lists?${trelloApi.credentials}"
-        return getObjectArray(listsUrl)
+        return getTrelloObjectArray(listsUrl)
     }
 
     fun getMembers(): Array<Member> {
         val membersUrl = "${trelloApi.baseApiUrl}/boards/$id/members?${trelloApi.credentials}"
-        return getObjectArray(membersUrl)
+        return getTrelloObjectArray(membersUrl)
     }
 
     fun getMyPrefs(): MyPrefs {
@@ -296,7 +296,7 @@ class Board internal constructor() : TrelloObject() {
 
     }
 
-    class MyPrefs : TrelloObject() {
+    class MyPrefs {
         val showSidebar: Boolean = false
         val showSidebarMembers: Boolean = false
         val showSidebarBoardActions: Boolean = false
@@ -319,7 +319,7 @@ class Board internal constructor() : TrelloObject() {
         var black: String = ""
     }
 
-    class BoardStar : TrelloObject() {
+    class BoardStar {
         val id: String = ""
         val idBoard: String = ""
         val pos: Float = 0F
@@ -331,7 +331,7 @@ class Board internal constructor() : TrelloObject() {
         }
     }
 
-    class Membership : TrelloObject() {
+    class Membership {
 
         val id: String = ""
         val idMember: String = ""

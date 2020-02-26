@@ -1,6 +1,8 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
 import me.theforbiddenai.trelloapiwrapper.utils.DescData
+import me.theforbiddenai.trelloapiwrapper.utils.OptionValue
+import java.util.*
 
 class Card : TrelloObject() {
 
@@ -33,7 +35,57 @@ class Card : TrelloObject() {
     val url: String = ""
     val cover: Cover = Cover()
 
-    // TODO: Implement the rest of the get, put, and delete functions
+    fun getActions(): Array<Action> {
+        val actionsUrl = "${trelloApi.baseApiUrl}/cards/$id/actions?${trelloApi.credentials}"
+        return getTrelloObjectArray(actionsUrl)
+    }
+
+    fun getAttachments(): Array<Attachment> {
+        val attachmentsUrl = "${trelloApi.baseApiUrl}/cards/$id/attachments?${trelloApi.credentials}"
+        return getObjectArray(attachmentsUrl)
+    }
+
+    fun getAttachment(attachmentId: String): Attachment {
+        val attachmentUrl = "${trelloApi.baseApiUrl}/cards/$id/attachments/$attachmentId?${trelloApi.credentials}"
+        return getObject(attachmentUrl)
+    }
+
+    fun getBoard(): Board {
+        val boardUrl = "${trelloApi.baseApiUrl}/cards/$id/board?${trelloApi.credentials}"
+        return getTrelloObject(boardUrl)
+    }
+
+    fun getChecklists(): Array<Checklist> {
+        val checklistsUrl = "${trelloApi.baseApiUrl}/cards/$id/checklists?${trelloApi.credentials}"
+        return getObjectArray(checklistsUrl)
+    }
+
+    fun getCheckItem(checkItemId: String): Checklist.CheckItem {
+        val checkItemsUrl = "${trelloApi.baseApiUrl}/cards/$id/checkItem/$checkItemId?${trelloApi.credentials}"
+        return getObject(checkItemsUrl)
+    }
+
+    fun getCustomFieldItems(): Array<CardCustomFieldItems> {
+        val customFieldItemsUrl = "${trelloApi.baseApiUrl}/cards/$id/customFieldItems?${trelloApi.credentials}"
+        return getObjectArray(customFieldItemsUrl)
+    }
+
+    fun getList(): List {
+        val listUrl = "${trelloApi.baseApiUrl}/cards/$id/list?${trelloApi.credentials}"
+        return getTrelloObject(listUrl)
+    }
+
+    fun getMembers(): Array<Member> {
+        val membersUrl = "${trelloApi.baseApiUrl}/cards/$id/members?${trelloApi.credentials}"
+        return getObjectArray(membersUrl)
+    }
+
+    fun getMembersVoted(): Array<Member> {
+        val membersUrl = "${trelloApi.baseApiUrl}/cards/$id/membersVoted?${trelloApi.credentials}"
+        return getObjectArray(membersUrl)
+    }
+
+    // TODO: Implement the rest of the put, and delete functions
 
     class CheckItemStates {
         val idCheckItem: String = ""
@@ -76,6 +128,37 @@ class Card : TrelloObject() {
         val idUploadedBackground: String = ""
         val size: String = ""
         val brightness: String = ""
+    }
+
+    class Attachment {
+        val id: String = ""
+        val bytes: Int = 0
+        val date: Date = Date()
+        val edgeColor: String = ""
+        val idMember: String = ""
+        val isUpload: Boolean = false
+        val mimeType: String = ""
+        val name: String = ""
+        val previews: Array<Preview> = arrayOf()
+
+        class Preview {
+            val id: String = ""
+            val _id: String = ""
+            val scaled: Boolean = false
+            val url: String = ""
+            val bytes: Int = 0
+            val height: Int = 0
+            val width: Int = 0
+        }
+
+    }
+
+    class CardCustomFieldItems {
+        val id: String = ""
+        val value: OptionValue = OptionValue()
+        val idCustomField: String = ""
+        val idModel: String = ""
+        val modelType: String = ""
     }
 
 }

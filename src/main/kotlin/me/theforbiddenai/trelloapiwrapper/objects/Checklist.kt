@@ -7,11 +7,11 @@ class Checklist : TrelloObject() {
     val idBoard: String = ""
     val idCard: String = ""
     val pos: Float = 0F
-    val checkItems: Array<CheckItems> = arrayOf()
+    val checkItems: Array<CheckItem> = arrayOf()
 
     // TODO: Implement the rest of the get, put, and delete functions
 
-    class CheckItems {
+    class CheckItem {
         val idChecklist: String = ""
         val state: String = ""
         val id: String = ""

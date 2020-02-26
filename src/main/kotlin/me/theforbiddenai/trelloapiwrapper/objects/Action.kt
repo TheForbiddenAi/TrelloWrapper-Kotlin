@@ -16,32 +16,32 @@ class Action : TrelloObject() {
 
     fun getBoard(): Board {
         val boardUrl = "${trelloApi.baseApiUrl}/actions/$id/board?${trelloApi.credentials}"
-        return getObject(boardUrl)
+        return getTrelloObject(boardUrl)
     }
 
     fun getCard(): Card {
         val cardUrl = "${trelloApi.baseApiUrl}/actions/$id/card?${trelloApi.credentials}"
-        return getObject(cardUrl)
+        return getTrelloObject(cardUrl)
     }
 
     fun getList(): List {
         val listUrl = "${trelloApi.baseApiUrl}/actions/$id/list?${trelloApi.credentials}"
-        return getObject(listUrl)
+        return getTrelloObject(listUrl)
     }
 
     fun getMember(): Member {
         val listUrl = "${trelloApi.baseApiUrl}/actions/$id/member?${trelloApi.credentials}"
-        return getObject(listUrl)
+        return getTrelloObject(listUrl)
     }
 
     fun getMemberCreator(): Member {
         val listUrl = "${trelloApi.baseApiUrl}/actions/$id/member?${trelloApi.credentials}"
-        return getObject(listUrl)
+        return getTrelloObject(listUrl)
     }
 
     fun getOrganization(): Organization {
         val listUrl = "${trelloApi.baseApiUrl}/actions/$id/organization?${trelloApi.credentials}"
-        return getObject(listUrl)
+        return getTrelloObject(listUrl)
     }
 
     fun updateComment(commentText: String) {

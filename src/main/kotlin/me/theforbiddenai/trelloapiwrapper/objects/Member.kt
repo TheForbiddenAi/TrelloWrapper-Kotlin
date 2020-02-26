@@ -38,12 +38,12 @@ class Member : TrelloObject() {
 
     fun getActions(): Array<Action> {
         val actionsUrl = "${trelloApi.baseApiUrl}/members/$id/actions?${trelloApi.credentials}"
-        return getObjectArray(actionsUrl)
+        return getTrelloObjectArray(actionsUrl)
     }
 
     fun getBoards(): Array<Board> {
         val boardsUrl = "${trelloApi.baseApiUrl}/members/$id/boards?${trelloApi.credentials}"
-        return getObjectArray(boardsUrl)
+        return getTrelloObjectArray(boardsUrl)
     }
 
     fun getBoardBackgrounds(): Array<BoardBackground> {
@@ -69,17 +69,17 @@ class Member : TrelloObject() {
 
     fun getBoardsInvited(): Array<Board> {
         val boardsInvitedUrl = "${trelloApi.baseApiUrl}/members/$id/boardsInvited?${trelloApi.credentials}"
-        return getObjectArray(boardsInvitedUrl)
+        return getTrelloObjectArray(boardsInvitedUrl)
     }
 
     fun getCards(): Array<Card> {
         val cardsUrl = "${trelloApi.baseApiUrl}/members/$id/cards?${trelloApi.credentials}"
-        return getObjectArray(cardsUrl)
+        return getTrelloObjectArray(cardsUrl)
     }
 
     fun getEnterprises(): Array<Enterprise> {
         val cardsUrl = "${trelloApi.baseApiUrl}/members/$id/enterprises?${trelloApi.credentials}"
-        return getObjectArray(cardsUrl)
+        return getTrelloObjectArray(cardsUrl)
     }
 
     // TODO: Implement the rest of the get, put, and delete functions
@@ -125,7 +125,7 @@ class Member : TrelloObject() {
         }
     }
 
-    class BoardBackground : TrelloObject() {
+    class BoardBackground {
         val id: String = ""
         val type: String = ""
         val tile: Boolean = false
@@ -133,7 +133,7 @@ class Member : TrelloObject() {
         val color: String = ""
     }
 
-    class MemberBoardStar : TrelloObject() {
+    class MemberBoardStar {
         val id: String = ""
         val idBoard: String = ""
         val pos: Float = 0F
