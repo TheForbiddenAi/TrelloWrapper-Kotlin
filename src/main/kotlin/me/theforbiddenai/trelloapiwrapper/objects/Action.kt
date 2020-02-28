@@ -10,7 +10,7 @@ class Action : TrelloObject() {
     val idMemberCreator: String = ""
     val data: DataObject = DataObject()
     val type: String = ""
-    val date: Date = Date()
+    val date: Date? = null
     val display: Display = Display()
     val memberCreator: ShortMember = ShortMember()
 

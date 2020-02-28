@@ -8,7 +8,7 @@ class Notification : TrelloObject() {
 
     val id: String = ""
     val data: DataObject = DataObject()
-    val date: Date = Date()
+    val date: Date? = null
     val idMemberCreator: String = ""
     val idAction: String = ""
     val type: String = ""

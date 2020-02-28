@@ -1,37 +1,45 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
+import me.theforbiddenai.trelloapiwrapper.TrelloApi
 import me.theforbiddenai.trelloapiwrapper.utils.DescData
 import me.theforbiddenai.trelloapiwrapper.utils.OptionValue
 import java.util.*
 
-class Card : TrelloObject() {
+class Card internal constructor() : TrelloObject() {
+
+    constructor(trelloApi: TrelloApi, idList: String, name: String = "", desc: String = "") : this() {
+        this.trelloApi = trelloApi
+        this.idList = idList
+        this.name = name
+        this.desc = desc
+    }
 
     val id: String = ""
     val checkItemStates: Array<CheckItemStates> = arrayOf()
-    val closed: Boolean = false
+    var closed: Boolean = false
     val dateLastActivity: Boolean = false
-    val desc: String = ""
+    var desc: String = ""
     val descData: DescData = DescData()
     val dueReminder: Int = 0
-    val idBoard: String = ""
-    val idList: String = ""
+    var idBoard: String = ""
+    var idList: String = ""
     val idMembersVoted: Array<String> = arrayOf()
     val idShort: Int = 0
-    val idAttachmentCover: String = ""
-    val idLabels: Array<String> = arrayOf()
+    var idAttachmentCover: String = ""
+    var idLabels: Array<String> = arrayOf()
     val manualCoverAttachment: Boolean = false
-    val name: String = ""
-    val pos: Float = 0F
+    var name: String = ""
+    var pos: Float = 0F
     val shortLink: String = ""
     val isTemplate: Boolean = false
     val badges: Badge = Badge()
-    val dueComplete: Boolean = false
-    val due: String = ""
+    var dueComplete: Boolean = false
+    var due: Date? = null
     val idChecklists: Array<String> = arrayOf()
-    val idMembers: Array<String> = arrayOf()
+    var idMembers: Array<String> = arrayOf()
     val labels: Array<Label> = arrayOf()
     val shortUrl: String = ""
-    val subscribed: Boolean = false
+    var subscribed: Boolean = false
     val url: String = ""
     val cover: Cover = Cover()
 
@@ -85,7 +93,140 @@ class Card : TrelloObject() {
         return getObjectArray(membersUrl)
     }
 
-    // TODO: Implement the rest of the put, and delete functions
+    fun updateCard() {
+        val json = trelloApi.gson.toJson(this)
+        val updateCardUrl = "${trelloApi.baseApiUrl}/cards/$id?${trelloApi.credentials}"
+
+        trelloApi.httpRequests.putRequest(updateCardUrl, json)
+    }
+
+    fun updateComment(actionId: String, value: String) {
+        val urlParams = "text=$value"
+        val updateCommentUrl =
+            "${trelloApi.baseApiUrl}/cards/$id/actions/$actionId/comments?$urlParams&${trelloApi.credentials}"
+
+        trelloApi.httpRequests.putRequest(updateCommentUrl)
+    }
+
+    fun updateCheckItem(
+        checkItemId: String,
+        name: String = "",
+        checklistId: String = "",
+        state: String = "incomplete",
+        pos: String = "bottom"
+    ) {
+        var urlParams = "state=$state&pos=$pos"
+        if (name.isNotEmpty()) urlParams += "&name=$name"
+        if (checklistId.isNotEmpty()) urlParams += "&idChecklist=$checklistId"
+
+        val updateCheckItemUrl =
+            "${trelloApi.baseApiUrl}/cards/$id/checkItem/$checkItemId?$urlParams&${trelloApi.credentials}"
+
+        trelloApi.httpRequests.putRequest(updateCheckItemUrl)
+    }
+
+    fun createCard(): Card {
+        val cardJson = trelloApi.gson.toJson(this)
+        val jsonString = cardJson.toString()
+
+        val createCardUrl = "${trelloApi.baseApiUrl}/cards?${trelloApi.credentials}"
+
+        val result = trelloApi.httpRequests.postRequest(createCardUrl, jsonString)
+        return createObjectFromJson(result)
+    }
+
+    fun addComment(text: String) {
+        val addCommentUrl = "${trelloApi.baseApiUrl}/cards/$id/actions/comments?text=$text&${trelloApi.credentials}"
+        trelloApi.httpRequests.postRequest(addCommentUrl)
+    }
+
+    fun addAttachment(url: String, name: String = ""): Attachment {
+        var urlParams = "url=$url"
+        if (name.isNotEmpty()) urlParams += "&name=$name"
+        val addAttachmentUrl = "${trelloApi.baseApiUrl}/cards/$id/attachments?$urlParams&${trelloApi.credentials}"
+
+        val result = trelloApi.httpRequests.postRequest(addAttachmentUrl)
+        return trelloApi.gson.fromJson(result, Attachment::class.java)
+    }
+
+    fun addChecklist(name: String = "", checklistSource: String = "", pos: String = "") {
+        var urlParams = ""
+        if (name.isNotEmpty()) urlParams = "name=$name"
+        if (checklistSource.isNotEmpty()) urlParams += "&idChecklistSource=$checklistSource"
+        if (pos.isNotEmpty()) urlParams += "&pos=$pos"
+        urlParams = urlParams.removePrefix("&")
+
+        val addChecklistUrl = "${trelloApi.baseApiUrl}/cards/$id/checklists?$urlParams&${trelloApi.credentials}"
+
+        trelloApi.httpRequests.postRequest(addChecklistUrl)
+    }
+
+    fun addLabel(labelId: String) {
+        val addLabelUrl = "${trelloApi.baseApiUrl}/cards/$id/idLabels?value=$labelId&${trelloApi.credentials}"
+        trelloApi.httpRequests.postRequest(addLabelUrl)
+    }
+
+    fun addMember(memberId: String) {
+        val addMemberUrl = "${trelloApi.baseApiUrl}/cards/$id/idMembers?value=$memberId&${trelloApi.credentials}"
+        trelloApi.httpRequests.postRequest(addMemberUrl)
+    }
+
+    fun addLabel(color: String, name: String) {
+        val urlParams = "color=$color&name=$name"
+
+        val addLabelUrl = "${trelloApi.baseApiUrl}/cards/$id/labels?$urlParams&${trelloApi.credentials}"
+        trelloApi.httpRequests.postRequest(addLabelUrl)
+    }
+
+    fun markAssociatedNotificationsRead() {
+        val addLabelUrl = "${trelloApi.baseApiUrl}/cards/$id/markAssociatedNotificationsRead?${trelloApi.credentials}"
+        trelloApi.httpRequests.postRequest(addLabelUrl)
+    }
+
+    fun addMemberVote(memberId: String) {
+        val addMemberVoteUrl = "${trelloApi.baseApiUrl}/cards/$id/membersVoted?value=$memberId&${trelloApi.credentials}"
+        trelloApi.httpRequests.postRequest(addMemberVoteUrl)
+    }
+
+    fun deleteCard() {
+        val deleteCardUrl = "${trelloApi.baseApiUrl}/cards/$id?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(deleteCardUrl)
+    }
+
+    fun deleteComment(actionId: String) {
+        val deleteCommentUrl = "${trelloApi.baseApiUrl}/cards/$id/actions/$actionId/comments?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(deleteCommentUrl)
+    }
+
+    fun deleteAttachment(attachmentId: String) {
+        val deleteAttachmentUrl = "${trelloApi.baseApiUrl}/cards/$id/attachments/$attachmentId?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(deleteAttachmentUrl)
+    }
+
+    fun deleteCheckItem(checkItemId: String) {
+        val deleteCheckItemUrl = "${trelloApi.baseApiUrl}/cards/$id/checkItem/$checkItemId?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(deleteCheckItemUrl)
+    }
+
+    fun deleteChecklist(checklistId: String) {
+        val deleteChecklistUrl = "${trelloApi.baseApiUrl}/cards/$id/checklists/$checklistId?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(deleteChecklistUrl)
+    }
+
+    fun removeLabel(labelId: String) {
+        val removeLabelId = "${trelloApi.baseApiUrl}/cards/$id/idLabels/$labelId?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(removeLabelId)
+    }
+
+    fun removeMember(memberId: String) {
+        val removeMemberId = "${trelloApi.baseApiUrl}/cards/$id/idMembers/$memberId?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(removeMemberId)
+    }
+
+    fun removeMemberVote(memberId: String) {
+        val removeMemberVoteUrl = "${trelloApi.baseApiUrl}/cards/$id/membersVoted/$memberId?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(removeMemberVoteUrl)
+    }
 
     class CheckItemStates {
         val idCheckItem: String = ""
@@ -133,7 +274,7 @@ class Card : TrelloObject() {
     class Attachment {
         val id: String = ""
         val bytes: Int = 0
-        val date: Date = Date()
+        val date: Date? = null
         val edgeColor: String = ""
         val idMember: String = ""
         val isUpload: Boolean = false

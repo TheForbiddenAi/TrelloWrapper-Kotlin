@@ -7,10 +7,20 @@ import java.util.*
 
 class Board internal constructor() : TrelloObject() {
 
-    constructor(trelloApi: TrelloApi, name: String) : this() {
+    constructor(
+        trelloApi: TrelloApi,
+        name: String,
+        defaultLists: Boolean = false,
+        defaultLabels: Boolean = true
+    ) : this() {
         this.trelloApi = trelloApi
         this.name = name
+        this.defaultLists = defaultLists
+        this.defaultLabels = defaultLabels
     }
+
+    private var defaultLists: Boolean = false
+    private var defaultLabels: Boolean = true
 
     val id: String = ""
     var name: String = ""
@@ -27,8 +37,8 @@ class Board internal constructor() : TrelloObject() {
     val memberships: Array<Membership> = arrayOf()
     val subscribed: String = ""
     val labelNames: DefaultLabels = DefaultLabels()
-    val dateLastActivity: Date = Date()
-    val dateLastView: Date = Date()
+    val dateLastActivity: Date? = null
+    val dateLastView: Date? = null
     val shortUrl: String = ""
     val enterpriseOwned: Boolean = false
 
@@ -125,9 +135,12 @@ class Board internal constructor() : TrelloObject() {
     }
 
     fun createBoard(): Board {
-        val urlParams = "name=$name&defaultLists=false"
-        val createBoardUrl = "${trelloApi.baseApiUrl}/boards?$urlParams&${trelloApi.credentials}"
-        val result = trelloApi.httpRequests.postRequest(createBoardUrl)
+        val boardJson = trelloApi.gson.toJson(this)
+        val jsonString = boardJson.toString()
+
+        val createBoardUrl = "${trelloApi.baseApiUrl}/boards?${trelloApi.credentials}"
+
+        val result = trelloApi.httpRequests.postRequest(createBoardUrl, jsonString)
 
         return createObjectFromJson(result)
     }

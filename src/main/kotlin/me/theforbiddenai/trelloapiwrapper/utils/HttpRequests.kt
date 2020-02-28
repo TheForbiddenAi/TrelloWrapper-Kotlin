@@ -39,8 +39,11 @@ class HttpRequests {
      * @param payload The payload being sent to the url
      * @return The found json data in the form of a string
      */
-    internal fun postRequest(url: String): String {
-        val (_, response, result) = url.httpPost().responseString()
+    internal fun postRequest(url: String, payload: String = ""): String {
+        val (_, response, result) = url.httpPost()
+            .header("Content-Type" to "application/json")
+            .body(payload)
+            .responseString()
 
         return when (result) {
             is Result.Success -> {

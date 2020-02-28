@@ -66,7 +66,7 @@ class DataObject {
         val modelType: String = ""
 
         class CustomFieldItemValue {
-            val date: Date = Date()
+            val date: Date? = null
         }
     }
 

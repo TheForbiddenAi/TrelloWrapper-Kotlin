@@ -107,7 +107,7 @@ class Member : TrelloObject() {
 
     class MarketingOptIn {
         val optedIn: Boolean = false
-        val date: Date = Date()
+        val date: Date? = null
     }
 
     class MemberPrefs {
