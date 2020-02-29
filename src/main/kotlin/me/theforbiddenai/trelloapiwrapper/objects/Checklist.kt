@@ -27,12 +27,12 @@ class Checklist internal constructor() : TrelloObject() {
 
     fun getCards(): Array<Card> {
         val cardsUrl = "${trelloApi.baseApiUrl}/checklists/$id/cards?${trelloApi.credentials}"
-        return getObjectArray(cardsUrl)
+        return getTrelloObjectArray(cardsUrl)
     }
 
     fun getCheckItemById(checkItemId: String): CheckItem {
         val cardsUrl = "${trelloApi.baseApiUrl}/checklists/$id/checkItems/$checkItemId?${trelloApi.credentials}"
-        return getObject(cardsUrl)
+        return getTrelloObject(cardsUrl)
     }
 
     fun updateChecklist() {
@@ -60,7 +60,7 @@ class Checklist internal constructor() : TrelloObject() {
         val createCheckItemUrl = "${trelloApi.baseApiUrl}/checklists/$id/checkItems?$urlParams&${trelloApi.credentials}"
 
         val result = trelloApi.httpRequests.postRequest(createCheckItemUrl)
-        return trelloApi.gson.fromJson(result, CheckItem::class.java)
+        return createObjectFromJson(result)
     }
 
     fun deleteChecklist() {

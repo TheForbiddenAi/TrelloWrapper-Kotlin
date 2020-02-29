@@ -2,7 +2,6 @@ package me.theforbiddenai.trelloapiwrapper.objects
 
 import me.theforbiddenai.trelloapiwrapper.TrelloApi
 import me.theforbiddenai.trelloapiwrapper.utils.DescData
-import me.theforbiddenai.trelloapiwrapper.utils.OptionValue
 import java.util.*
 
 class Card internal constructor() : TrelloObject() {
@@ -50,12 +49,12 @@ class Card internal constructor() : TrelloObject() {
 
     fun getAttachments(): Array<Attachment> {
         val attachmentsUrl = "${trelloApi.baseApiUrl}/cards/$id/attachments?${trelloApi.credentials}"
-        return getObjectArray(attachmentsUrl)
+        return getTrelloObjectArray(attachmentsUrl)
     }
 
     fun getAttachment(attachmentId: String): Attachment {
         val attachmentUrl = "${trelloApi.baseApiUrl}/cards/$id/attachments/$attachmentId?${trelloApi.credentials}"
-        return getObject(attachmentUrl)
+        return getTrelloObject(attachmentUrl)
     }
 
     fun getBoard(): Board {
@@ -65,17 +64,17 @@ class Card internal constructor() : TrelloObject() {
 
     fun getChecklists(): Array<Checklist> {
         val checklistsUrl = "${trelloApi.baseApiUrl}/cards/$id/checklists?${trelloApi.credentials}"
-        return getObjectArray(checklistsUrl)
+        return getTrelloObjectArray(checklistsUrl)
     }
 
-    fun getCheckItem(checkItemId: String): Checklist.CheckItem {
+    fun getCheckItemById(checkItemId: String): Checklist.CheckItem {
         val checkItemsUrl = "${trelloApi.baseApiUrl}/cards/$id/checkItem/$checkItemId?${trelloApi.credentials}"
-        return getObject(checkItemsUrl)
+        return getTrelloObject(checkItemsUrl)
     }
 
-    fun getCustomFieldItems(): Array<CardCustomFieldItems> {
-        val customFieldItemsUrl = "${trelloApi.baseApiUrl}/cards/$id/customFieldItems?${trelloApi.credentials}"
-        return getObjectArray(customFieldItemsUrl)
+    fun getCustomFields(): Array<CustomField> {
+        val customFieldItemsUrl = "${trelloApi.baseApiUrl}/cards/$id/customFields?${trelloApi.credentials}"
+        return getTrelloObjectArray(customFieldItemsUrl)
     }
 
     fun getList(): List {
@@ -85,12 +84,22 @@ class Card internal constructor() : TrelloObject() {
 
     fun getMembers(): Array<Member> {
         val membersUrl = "${trelloApi.baseApiUrl}/cards/$id/members?${trelloApi.credentials}"
-        return getObjectArray(membersUrl)
+        return getTrelloObjectArray(membersUrl)
     }
 
     fun getMembersVoted(): Array<Member> {
         val membersUrl = "${trelloApi.baseApiUrl}/cards/$id/membersVoted?${trelloApi.credentials}"
-        return getObjectArray(membersUrl)
+        return getTrelloObjectArray(membersUrl)
+    }
+
+    fun getStickers(): Array<Sticker> {
+        val stickerArray = "${trelloApi.baseApiUrl}/cards/$id/stickers?${trelloApi.credentials}"
+        return getTrelloObjectArray(stickerArray)
+    }
+
+    fun getStickerById(stickerId: String): Sticker {
+        val stickerArray = "${trelloApi.baseApiUrl}/cards/$id/stickers/$stickerId?${trelloApi.credentials}"
+        return getTrelloObject(stickerArray)
     }
 
     fun updateCard() {
@@ -125,6 +134,14 @@ class Card internal constructor() : TrelloObject() {
         trelloApi.httpRequests.putRequest(updateCheckItemUrl)
     }
 
+    fun updateSticker(stickerId: String, top: Float, left: Float, zIndex: Int, rotate: Float) {
+        val urlParams = "top=$top&left=$left&zIndex=$zIndex&rotate=$rotate"
+        val updateStickerUrl =
+            "${trelloApi.baseApiUrl}/cards/$id/stickers/$stickerId?$urlParams&${trelloApi.credentials}"
+
+        trelloApi.httpRequests.putRequest(updateStickerUrl)
+    }
+
     fun createCard(): Card {
         val cardJson = trelloApi.gson.toJson(this)
         val jsonString = cardJson.toString()
@@ -146,7 +163,7 @@ class Card internal constructor() : TrelloObject() {
         val addAttachmentUrl = "${trelloApi.baseApiUrl}/cards/$id/attachments?$urlParams&${trelloApi.credentials}"
 
         val result = trelloApi.httpRequests.postRequest(addAttachmentUrl)
-        return trelloApi.gson.fromJson(result, Attachment::class.java)
+        return createObjectFromJson(result)
     }
 
     fun addChecklist(name: String = "", checklistSource: String = "", pos: String = "") {
@@ -188,6 +205,14 @@ class Card internal constructor() : TrelloObject() {
         trelloApi.httpRequests.postRequest(addMemberVoteUrl)
     }
 
+    fun addSticker(imageIdentifier: String, top: Float, left: Float, zIndex: Int, rotate: Float = 0F): Sticker {
+        val urlParams = "image=$imageIdentifier&top=$top&left=$left&zIndex=$zIndex&rotate=$rotate"
+        val addStickerUrl = "${trelloApi.baseApiUrl}/cards/$id/stickers?$urlParams&${trelloApi.credentials}"
+
+        val result = trelloApi.httpRequests.postRequest(addStickerUrl)
+        return createObjectFromJson(result)
+    }
+
     fun deleteCard() {
         val deleteCardUrl = "${trelloApi.baseApiUrl}/cards/$id?${trelloApi.credentials}"
         trelloApi.httpRequests.deleteRequest(deleteCardUrl)
@@ -226,6 +251,11 @@ class Card internal constructor() : TrelloObject() {
     fun removeMemberVote(memberId: String) {
         val removeMemberVoteUrl = "${trelloApi.baseApiUrl}/cards/$id/membersVoted/$memberId?${trelloApi.credentials}"
         trelloApi.httpRequests.deleteRequest(removeMemberVoteUrl)
+    }
+
+    fun removeSticker(memberId: String) {
+        val removeStickerUrl = "${trelloApi.baseApiUrl}/cards/$id/stickers/$memberId?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(removeStickerUrl)
     }
 
     class CheckItemStates {
@@ -280,26 +310,16 @@ class Card internal constructor() : TrelloObject() {
         val isUpload: Boolean = false
         val mimeType: String = ""
         val name: String = ""
-        val previews: Array<Preview> = arrayOf()
-
-        class Preview {
-            val id: String = ""
-            val _id: String = ""
-            val scaled: Boolean = false
-            val url: String = ""
-            val bytes: Int = 0
-            val height: Int = 0
-            val width: Int = 0
-        }
-
     }
 
-    class CardCustomFieldItems {
+    class Sticker {
         val id: String = ""
-        val value: OptionValue = OptionValue()
-        val idCustomField: String = ""
-        val idModel: String = ""
-        val modelType: String = ""
+        val top: Float = 0F
+        val left: Float = 0F
+        val zIndex: Int = 0
+        val rotate: Float = 0F
+        val image: String = ""
+        val imageUrl: String = ""
     }
 
 }

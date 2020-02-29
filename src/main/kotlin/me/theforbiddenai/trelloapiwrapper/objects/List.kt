@@ -55,10 +55,7 @@ class List internal constructor() : TrelloObject() {
         val createList = "${trelloApi.baseApiUrl}/lists?$urlParams&${trelloApi.credentials}"
 
         val result = trelloApi.httpRequests.postRequest(createList)
-        val list = trelloApi.gson.fromJson(result, this::class.java)
-        list.trelloApi = trelloApi
-
-        return list
+        return createObjectFromJson(result)
     }
 
     fun archiveAllCards() {

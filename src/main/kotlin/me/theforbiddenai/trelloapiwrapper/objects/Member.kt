@@ -48,23 +48,23 @@ class Member : TrelloObject() {
 
     fun getBoardBackgrounds(): Array<BoardBackground> {
         val boardBackgroundsUrl = "${trelloApi.baseApiUrl}/members/$id/boardBackgrounds?${trelloApi.credentials}"
-        return getObjectArray(boardBackgroundsUrl)
+        return getTrelloObjectArray(boardBackgroundsUrl)
     }
 
     fun getBoardBackground(idBackground: String): BoardBackground {
         val boardBackgroundUrl =
             "${trelloApi.baseApiUrl}/members/$id/boardBackgrounds/$idBackground?${trelloApi.credentials}"
-        return getObject(boardBackgroundUrl)
+        return getTrelloObject(boardBackgroundUrl)
     }
 
     fun getBoardStars(): Array<MemberBoardStar> {
         val boardStarsUrl = "${trelloApi.baseApiUrl}/members/$id/boardStars?${trelloApi.credentials}"
-        return getObjectArray(boardStarsUrl)
+        return getTrelloObjectArray(boardStarsUrl)
     }
 
     fun getBoardStar(idStar: String): MemberBoardStar {
         val boardStarUrl = "${trelloApi.baseApiUrl}/members/$id/boardStars/$idStar?${trelloApi.credentials}"
-        return getObject(boardStarUrl)
+        return getTrelloObject(boardStarUrl)
     }
 
     fun getBoardsInvited(): Array<Board> {

@@ -7,29 +7,23 @@ abstract class TrelloObject {
     @Transient
     internal lateinit var trelloApi: TrelloApi
 
-    internal inline fun <reified T : TrelloObject> getTrelloObject(url: String): T {
-        return trelloApi.getObject(url)
+    internal inline fun <reified T> getTrelloObject(url: String): T {
+        return trelloApi.getTrelloObject(url)
     }
 
-    internal inline fun <reified T : TrelloObject> getTrelloObjectArray(url: String): Array<T> {
-        return trelloApi.getObjectArray(url)
+
+    internal inline fun <reified T> getTrelloObjectArray(url: String): Array<T> {
+        return trelloApi.getTrelloObjectArray(url)
     }
 
-    internal inline fun <reified T> getObject(url: String): T {
-        val json = trelloApi.httpRequests.getRequest(url)
-        return trelloApi.gson.fromJson(json, T::class.java)
-    }
+    internal inline fun <reified T> createObjectFromJson(json: String): T {
+        val foundObject = trelloApi.gson.fromJson(json, T::class.java)
 
-    internal inline fun <reified T> getObjectArray(url: String): Array<T> {
-        val json = trelloApi.httpRequests.getRequest(url)
-        return trelloApi.gson.fromJson(json, arrayOf<T>()::class.java) ?: emptyArray()
-    }
+        if (foundObject is TrelloObject) {
+            foundObject.trelloApi = trelloApi
+        }
 
-    internal inline fun <reified T : TrelloObject> createObjectFromJson(json: String): T {
-        val trelloObject = trelloApi.gson.fromJson(json, T::class.java)
-        trelloObject.trelloApi = trelloApi
-
-        return trelloObject
+        return foundObject
     }
 
 }

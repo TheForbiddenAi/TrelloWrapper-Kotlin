@@ -76,7 +76,7 @@ class DataObject {
     }
 
     class OldData {
-        val options: Array<CustomField.Option> = arrayOf()
+        val options: Array<CustomField.CustomFieldOption> = arrayOf()
         val dueComplete: Boolean = false
         val idList: String = ""
         val pos: Float = 0F
@@ -92,5 +92,5 @@ class DataObject {
 }
 
 class OptionValue {
-    val text: String = ""
+    var text: String = ""
 }

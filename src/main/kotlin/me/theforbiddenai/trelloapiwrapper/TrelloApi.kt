@@ -19,62 +19,62 @@ class TrelloApi(
 
     fun getAction(actionId: String): Action {
         val actionUrl = "$baseApiUrl/actions/$actionId?$credentials"
-        return getObject(actionUrl)
+        return getTrelloObject(actionUrl)
     }
 
     fun getBoard(boardId: String): Board {
         val boardUrl = "$baseApiUrl/boards/$boardId?fields=all&$credentials"
-        return getObject(boardUrl)
+        return getTrelloObject(boardUrl)
     }
 
     fun getCard(cardId: String): Card {
         val cardUrl = "$baseApiUrl/cards/$cardId?$credentials"
-        return getObject(cardUrl)
+        return getTrelloObject(cardUrl)
     }
 
     fun getCheckList(checklistId: String): Checklist {
         val checklistUrl = "$baseApiUrl/checklists/$checklistId?$credentials"
-        return getObject(checklistUrl)
+        return getTrelloObject(checklistUrl)
     }
 
     fun getCustomField(customFieldId: String): CustomField {
         val customFieldUrl = "$baseApiUrl/customFields/$customFieldId?$credentials"
-        return getObject(customFieldUrl)
+        return getTrelloObject(customFieldUrl)
     }
 
     fun getEnterprise(enterpriseId: String): Enterprise {
         val enterpriseUrl = "$baseApiUrl/enterprises/$enterpriseId?$credentials"
-        return getObject(enterpriseUrl)
+        return getTrelloObject(enterpriseUrl)
     }
 
     fun getLabel(labelId: String): Label {
         val labelUrl = "$baseApiUrl/labels/$labelId?$credentials"
-        return getObject(labelUrl)
+        return getTrelloObject(labelUrl)
     }
 
     fun getList(listId: String): List {
         val labelUrl = "$baseApiUrl/lists/$listId?$credentials"
-        return getObject(labelUrl)
+        return getTrelloObject(labelUrl)
     }
 
     fun getMember(memberId: String): Member {
         val memberUrl = "$baseApiUrl/members/$memberId?fields=all&$credentials"
-        return getObject(memberUrl)
+        return getTrelloObject(memberUrl)
     }
 
     fun getNotification(notificationId: String): Notification {
         val notificationUrl = "$baseApiUrl/notifications/$notificationId?$credentials"
-        return getObject(notificationUrl)
+        return getTrelloObject(notificationUrl)
     }
 
     fun getOrganization(organizationId: String): Organization {
         val notificationUrl = "$baseApiUrl/organizations/$organizationId?fields=all&$credentials"
-        return getObject(notificationUrl)
+        return getTrelloObject(notificationUrl)
     }
 
     fun getReactions(actionId: String): Array<Reaction> {
         val notificationUrl = "$baseApiUrl/actions/$actionId/reactions?$credentials"
-        return getObjectArray(notificationUrl)
+        return getTrelloObjectArray(notificationUrl)
     }
 
     /**
@@ -83,7 +83,7 @@ class TrelloApi(
      * @param url The object's url
      * @return The found trello object
      */
-    internal inline fun <reified T : TrelloObject> getObject(url: String): T {
+    internal inline fun <reified T> getTrelloObject(url: String): T {
         val jsonData = httpRequests.getRequest(url)
         val clazz = T::class.java
 
@@ -94,7 +94,9 @@ class TrelloApi(
         }
 
         val trelloObject = gson.fromJson(jsonData, clazz)
-        trelloObject.trelloApi = this
+        if (trelloObject is TrelloObject) {
+            trelloObject.trelloApi = this
+        }
 
         return trelloObject
     }
@@ -105,11 +107,16 @@ class TrelloApi(
      * @param url The object's url
      * @return An array of the found trello objects
      */
-    internal inline fun <reified T : TrelloObject> getObjectArray(url: String): Array<T> {
+    internal inline fun <reified T> getTrelloObjectArray(url: String): Array<T> {
         val jsonData = httpRequests.getRequest(url)
 
         val objectArray: Array<T> = gson.fromJson(jsonData, arrayOf<T>()::class.java) ?: return emptyArray()
-        objectArray.forEach { it.trelloApi = this }
+        if (objectArray.isArrayOf<TrelloObject>()) {
+            objectArray as Array<TrelloObject>
+
+            objectArray.forEach { it.trelloApi = this }
+        }
+
 
         return objectArray
 

@@ -49,7 +49,7 @@ class Board internal constructor() : TrelloObject() {
 
     fun getBoardStars(): Array<BoardStar> {
         val boardStarsUrl = "${trelloApi.baseApiUrl}/boards/$id/boardStars?${trelloApi.credentials}"
-        return getObjectArray(boardStarsUrl)
+        return getTrelloObjectArray(boardStarsUrl)
     }
 
     fun getCards(): Array<Card> {
@@ -89,7 +89,7 @@ class Board internal constructor() : TrelloObject() {
 
     fun getMyPrefs(): MyPrefs {
         val myPrefsUrl = "${trelloApi.baseApiUrl}/boards/$id/myprefs?${trelloApi.credentials}"
-        return getObject(myPrefsUrl)
+        return getTrelloObject(myPrefsUrl)
     }
 
     fun updateBoard() {
