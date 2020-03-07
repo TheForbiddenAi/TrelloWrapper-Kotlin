@@ -2,7 +2,6 @@ package me.theforbiddenai.trelloapiwrapper
 
 import com.google.gson.GsonBuilder
 import me.theforbiddenai.trelloapiwrapper.objects.*
-import me.theforbiddenai.trelloapiwrapper.objects.List
 import me.theforbiddenai.trelloapiwrapper.utils.HttpRequests
 
 
@@ -52,7 +51,7 @@ class TrelloApi(
         return getTrelloObject(labelUrl)
     }
 
-    fun getList(listId: String): List {
+    fun getList(listId: String): TrelloList {
         val labelUrl = "$baseApiUrl/lists/$listId?$credentials"
         return getTrelloObject(labelUrl)
     }

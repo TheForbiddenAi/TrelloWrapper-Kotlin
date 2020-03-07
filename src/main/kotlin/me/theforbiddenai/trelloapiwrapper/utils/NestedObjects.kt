@@ -91,6 +91,16 @@ class DataObject {
     }
 }
 
+class Sticker {
+    val id: String = ""
+    val top: Float = 0F
+    val left: Float = 0F
+    val zIndex: Int = 0
+    val rotate: Float = 0F
+    val image: String = ""
+    val imageUrl: String = ""
+}
+
 class OptionValue {
     var text: String = ""
 }

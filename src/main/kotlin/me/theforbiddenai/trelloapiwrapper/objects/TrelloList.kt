@@ -3,7 +3,7 @@ package me.theforbiddenai.trelloapiwrapper.objects
 import me.theforbiddenai.trelloapiwrapper.TrelloApi
 import me.theforbiddenai.trelloapiwrapper.utils.LimitOptions
 
-class List internal constructor() : TrelloObject() {
+class TrelloList internal constructor() : TrelloObject() {
 
     constructor(trelloApi: TrelloApi, name: String, idBoard: String) : this() {
         this.trelloApi = trelloApi
@@ -35,18 +35,19 @@ class List internal constructor() : TrelloObject() {
         return getTrelloObjectArray(cardsUrl)
     }
 
-    fun update() {
-        if (id.isEmpty()) {
-            throw IllegalArgumentException("Failed to find a list with the given id")
-        }
-
+    fun updateList() {
         val json = trelloApi.gson.toJson(this)
         val updateListUrl = "${trelloApi.baseApiUrl}/lists/$id?${trelloApi.credentials}"
 
         trelloApi.httpRequests.putRequest(updateListUrl, json)
     }
 
-    fun create(idListSource: String = ""): List {
+    fun setSoftLimit(softLimit: Int) {
+        val updateListUrl = "${trelloApi.baseApiUrl}/lists/$id/softLimit?value=$softLimit&${trelloApi.credentials}"
+        trelloApi.httpRequests.putRequest(updateListUrl)
+    }
+
+    fun createList(idListSource: String = ""): TrelloList {
         var urlParams = "name=$name&idBoard=$idBoard"
         if (idListSource.isNotEmpty()) {
             urlParams = "idListSource=$idListSource&$urlParams"

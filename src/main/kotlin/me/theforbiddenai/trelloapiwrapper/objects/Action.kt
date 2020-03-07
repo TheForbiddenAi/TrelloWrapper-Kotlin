@@ -24,7 +24,7 @@ class Action : TrelloObject() {
         return getTrelloObject(cardUrl)
     }
 
-    fun getList(): List {
+    fun getList(): TrelloList {
         val listUrl = "${trelloApi.baseApiUrl}/actions/$id/list?${trelloApi.credentials}"
         return getTrelloObject(listUrl)
     }

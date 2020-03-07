@@ -37,7 +37,44 @@ class Enterprise : TrelloObject() {
         return getTrelloObjectArray(membersUrl)
     }
 
-    // TODO: Implement the rest of the get, put, and delete functions
+    fun getMembersById(memberId: String): Member {
+        val memberUrl = "${trelloApi.baseApiUrl}/enterprises/$id/members/$memberId?${trelloApi.credentials}"
+        return getTrelloObject(memberUrl)
+    }
+
+    fun getNonTransferableMembers(organizationId: String): Array<Member> {
+        val nonTransferableMember =
+            "${trelloApi.baseApiUrl}/enterprises/$id/transferrable/organization/$organizationId?${trelloApi.credentials}"
+        return getTrelloObjectArray(nonTransferableMember)
+    }
+
+    fun deactivateMember(memberId: String) {
+        val deactivateMemberUrl =
+            "${trelloApi.baseApiUrl}/enterprises/$id/members/$memberId/deactivated?value=true&${trelloApi.credentials}"
+        trelloApi.httpRequests.putRequest(deactivateMemberUrl)
+    }
+
+    fun addOrganization(organizationId: String) {
+        val addOrganizationUrl =
+            "${trelloApi.baseApiUrl}/enterprises/$id/organizations?idOrganization=organizationId&${trelloApi.credentials}"
+        trelloApi.httpRequests.putRequest(addOrganizationUrl)
+    }
+
+    fun addAdmin(memberId: String) {
+        val addAdminUrl = "${trelloApi.baseApiUrl}/enterprises/$id/admins/$memberId?${trelloApi.credentials}"
+        trelloApi.httpRequests.putRequest(addAdminUrl)
+    }
+
+    fun removeOrganization(organizationId: String) {
+        val removeOrganizationUrl =
+            "${trelloApi.baseApiUrl}/enterprises/$id/organizations/$organizationId?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(removeOrganizationUrl)
+    }
+
+    fun removeAdmin(memberId: String) {
+        val removeAdminUrl = "${trelloApi.baseApiUrl}/enterprises/$id/admins/$memberId?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(removeAdminUrl)
+    }
 
 
     class EnterprisePrefs {

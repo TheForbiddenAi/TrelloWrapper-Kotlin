@@ -77,7 +77,7 @@ class Board internal constructor() : TrelloObject() {
         return getTrelloObjectArray(labelsUrl)
     }
 
-    fun getLists(): Array<List> {
+    fun getLists(): Array<TrelloList> {
         val listsUrl = "${trelloApi.baseApiUrl}/boards/$id/lists?${trelloApi.credentials}"
         return getTrelloObjectArray(listsUrl)
     }
@@ -130,7 +130,6 @@ class Board internal constructor() : TrelloObject() {
         val updateMyPrefsUrl =
             "${trelloApi.baseApiUrl}/boards/$id/myprefs/${prefName.prefName}?$urlParams&${trelloApi.credentials}"
 
-        println(updateMyPrefsUrl)
         trelloApi.httpRequests.putRequest(updateMyPrefsUrl)
     }
 
@@ -165,7 +164,7 @@ class Board internal constructor() : TrelloObject() {
         return createObjectFromJson(result)
     }
 
-    fun createList(name: String, pos: String = "top"): List {
+    fun createList(name: String, pos: String = "top"): TrelloList {
         val urlParams = "name=$name&pos=$pos"
         val createListUrl = "${trelloApi.baseApiUrl}/boards/$id/lists?$urlParams&${trelloApi.credentials}"
 

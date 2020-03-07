@@ -2,6 +2,7 @@ package me.theforbiddenai.trelloapiwrapper.objects
 
 import me.theforbiddenai.trelloapiwrapper.TrelloApi
 import me.theforbiddenai.trelloapiwrapper.utils.DescData
+import me.theforbiddenai.trelloapiwrapper.utils.Sticker
 import java.util.*
 
 class Card internal constructor() : TrelloObject() {
@@ -77,7 +78,7 @@ class Card internal constructor() : TrelloObject() {
         return getTrelloObjectArray(customFieldItemsUrl)
     }
 
-    fun getList(): List {
+    fun getList(): TrelloList {
         val listUrl = "${trelloApi.baseApiUrl}/cards/$id/list?${trelloApi.credentials}"
         return getTrelloObject(listUrl)
     }
@@ -312,14 +313,5 @@ class Card internal constructor() : TrelloObject() {
         val name: String = ""
     }
 
-    class Sticker {
-        val id: String = ""
-        val top: Float = 0F
-        val left: Float = 0F
-        val zIndex: Int = 0
-        val rotate: Float = 0F
-        val image: String = ""
-        val imageUrl: String = ""
-    }
 
 }

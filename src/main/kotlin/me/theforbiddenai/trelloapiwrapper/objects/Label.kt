@@ -15,14 +15,14 @@ class Label internal constructor() : TrelloObject() {
     var name: String = ""
     var color: String = ""
 
-    fun update() {
+    fun updateLabel() {
         val json = trelloApi.gson.toJson(this)
         val updateLabelUrl = "${trelloApi.baseApiUrl}/labels/$id?${trelloApi.credentials}"
 
         trelloApi.httpRequests.putRequest(updateLabelUrl, json)
     }
 
-    fun create(idBoard: String): Label {
+    fun createLabel(idBoard: String): Label {
         val urlParams = "name=$name&color=$color&idBoard=$idBoard"
         val createLabelUrl = "${trelloApi.baseApiUrl}/labels?$urlParams&${trelloApi.credentials}"
         val result = trelloApi.httpRequests.postRequest(createLabelUrl)
@@ -30,11 +30,7 @@ class Label internal constructor() : TrelloObject() {
         return createObjectFromJson(result)
     }
 
-    fun delete() {
-        if (id.isEmpty()) {
-            throw IllegalArgumentException("Failed to find a tag with the given id")
-        }
-
+    fun deleteLabel() {
         val deleteLabelUrl = "${trelloApi.baseApiUrl}/labels/$id?${trelloApi.credentials}"
         trelloApi.httpRequests.deleteRequest(deleteLabelUrl)
 
