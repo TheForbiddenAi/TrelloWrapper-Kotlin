@@ -1,4 +1,4 @@
-package me.theforbiddenai.trelloapiwrapper.utils
+package me.theforbiddenai.trellowrapperkotlin.utils
 
 import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpDelete

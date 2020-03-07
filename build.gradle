@@ -2,8 +2,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.3.61'
 }
 
-group 'me.theforbiddenai.trelloapiwrapper'
-version '1.0'
+group 'me.theforbiddenai.trellowrapper-kotlin'
+version '1.0.0'
 
 repositories {
     mavenCentral()

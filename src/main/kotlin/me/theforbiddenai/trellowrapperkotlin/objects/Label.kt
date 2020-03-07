@@ -1,6 +1,6 @@
-package me.theforbiddenai.trelloapiwrapper.objects
+package me.theforbiddenai.trellowrapperkotlin.objects
 
-import me.theforbiddenai.trelloapiwrapper.TrelloApi
+import me.theforbiddenai.trellowrapperkotlin.TrelloApi
 
 class Label internal constructor() : TrelloObject() {
 

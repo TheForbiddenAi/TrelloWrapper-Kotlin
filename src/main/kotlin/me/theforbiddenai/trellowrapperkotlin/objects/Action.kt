@@ -1,8 +1,8 @@
-package me.theforbiddenai.trelloapiwrapper.objects
+package me.theforbiddenai.trellowrapperkotlin.objects
 
 import com.google.gson.JsonObject
-import me.theforbiddenai.trelloapiwrapper.utils.DataObject
-import me.theforbiddenai.trelloapiwrapper.utils.ShortMember
+import me.theforbiddenai.trellowrapperkotlin.utils.DataObject
+import me.theforbiddenai.trellowrapperkotlin.utils.ShortMember
 import java.util.*
 
 class Action internal constructor() : TrelloObject() {

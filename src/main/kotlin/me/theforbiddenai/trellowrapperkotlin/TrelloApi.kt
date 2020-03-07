@@ -1,8 +1,8 @@
-package me.theforbiddenai.trelloapiwrapper
+package me.theforbiddenai.trellowrapperkotlin
 
 import com.google.gson.GsonBuilder
-import me.theforbiddenai.trelloapiwrapper.objects.*
-import me.theforbiddenai.trelloapiwrapper.utils.HttpRequests
+import me.theforbiddenai.trellowrapperkotlin.objects.*
+import me.theforbiddenai.trellowrapperkotlin.utils.HttpRequests
 
 
 class TrelloApi(

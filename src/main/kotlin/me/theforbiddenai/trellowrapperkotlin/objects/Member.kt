@@ -1,8 +1,8 @@
-package me.theforbiddenai.trelloapiwrapper.objects
+package me.theforbiddenai.trellowrapperkotlin.objects
 
-import me.theforbiddenai.trelloapiwrapper.utils.DescData
-import me.theforbiddenai.trelloapiwrapper.utils.LimitOptions
-import me.theforbiddenai.trelloapiwrapper.utils.Sticker
+import me.theforbiddenai.trellowrapperkotlin.utils.DescData
+import me.theforbiddenai.trellowrapperkotlin.utils.LimitOptions
+import me.theforbiddenai.trellowrapperkotlin.utils.Sticker
 import java.util.*
 
 class Member internal constructor() : TrelloObject() {

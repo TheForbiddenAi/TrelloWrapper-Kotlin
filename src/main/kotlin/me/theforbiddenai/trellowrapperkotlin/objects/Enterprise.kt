@@ -1,4 +1,4 @@
-package me.theforbiddenai.trelloapiwrapper.objects
+package me.theforbiddenai.trellowrapperkotlin.objects
 
 class Enterprise internal constructor() : TrelloObject() {
 

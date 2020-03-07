@@ -1,7 +1,7 @@
-package me.theforbiddenai.trelloapiwrapper.objects
+package me.theforbiddenai.trellowrapperkotlin.objects
 
-import me.theforbiddenai.trelloapiwrapper.TrelloApi
-import me.theforbiddenai.trelloapiwrapper.utils.LimitOptions
+import me.theforbiddenai.trellowrapperkotlin.TrelloApi
+import me.theforbiddenai.trellowrapperkotlin.utils.LimitOptions
 
 class TrelloList internal constructor() : TrelloObject() {
 

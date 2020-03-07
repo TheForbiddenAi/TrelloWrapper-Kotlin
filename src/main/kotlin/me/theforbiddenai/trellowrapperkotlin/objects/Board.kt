@@ -1,9 +1,9 @@
-package me.theforbiddenai.trelloapiwrapper.objects
+package me.theforbiddenai.trellowrapperkotlin.objects
 
-import me.theforbiddenai.trelloapiwrapper.TrelloApi
-import me.theforbiddenai.trelloapiwrapper.utils.DescData
-import me.theforbiddenai.trelloapiwrapper.utils.LimitOptions
-import me.theforbiddenai.trelloapiwrapper.utils.Membership
+import me.theforbiddenai.trellowrapperkotlin.TrelloApi
+import me.theforbiddenai.trellowrapperkotlin.utils.DescData
+import me.theforbiddenai.trellowrapperkotlin.utils.LimitOptions
+import me.theforbiddenai.trellowrapperkotlin.utils.Membership
 import java.util.*
 
 class Board internal constructor() : TrelloObject() {
@@ -58,7 +58,7 @@ class Board internal constructor() : TrelloObject() {
         return getTrelloObjectArray(cardsUrl)
     }
 
-    fun getCard(cardId: String): Card {
+    fun getCardById(cardId: String): Card {
         val cardUrl = "${trelloApi.baseApiUrl}/boards/$id/cards/$cardId?${trelloApi.credentials}"
         return getTrelloObject(cardUrl)
     }

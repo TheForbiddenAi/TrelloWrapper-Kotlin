@@ -1,7 +1,7 @@
-package me.theforbiddenai.trelloapiwrapper.objects
+package me.theforbiddenai.trellowrapperkotlin.objects
 
-import me.theforbiddenai.trelloapiwrapper.TrelloApi
-import me.theforbiddenai.trelloapiwrapper.utils.DescData
+import me.theforbiddenai.trellowrapperkotlin.TrelloApi
+import me.theforbiddenai.trellowrapperkotlin.utils.DescData
 import java.util.*
 
 class Checklist internal constructor() : TrelloObject() {

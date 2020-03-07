@@ -1,4 +1,4 @@
-# TrelloApi Wrapper
+# TrelloWrapper-Kotlin
 A kotlin wrapper, that supports java, for the [Trello REST API](https://developers.trello.com/)
 
 ## Documentation

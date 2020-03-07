@@ -1,6 +1,6 @@
-package me.theforbiddenai.trelloapiwrapper.objects
+package me.theforbiddenai.trellowrapperkotlin.objects
 
-import me.theforbiddenai.trelloapiwrapper.utils.ShortMember
+import me.theforbiddenai.trellowrapperkotlin.utils.ShortMember
 
 class Reaction internal constructor() : TrelloObject() {
 

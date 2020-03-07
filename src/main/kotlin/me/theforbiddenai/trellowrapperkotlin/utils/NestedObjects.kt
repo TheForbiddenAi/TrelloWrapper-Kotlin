@@ -1,6 +1,6 @@
-package me.theforbiddenai.trelloapiwrapper.utils
+package me.theforbiddenai.trellowrapperkotlin.utils
 
-import me.theforbiddenai.trelloapiwrapper.objects.CustomField
+import me.theforbiddenai.trellowrapperkotlin.objects.CustomField
 import java.util.*
 
 class LimitOptions {
