@@ -8,8 +8,7 @@ class Reaction internal constructor() : TrelloObject() {
     val idMember: String = ""
     val idModel: String = ""
     val idEmoji: String = ""
-    val member: ShortMember =
-        ShortMember()
+    val member: ShortMember = ShortMember()
     val emoji: Emoji = Emoji()
 
     class Emoji {

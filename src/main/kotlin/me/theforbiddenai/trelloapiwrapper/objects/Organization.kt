@@ -16,8 +16,7 @@ class Organization internal constructor() : TrelloObject() {
     var name: String = ""
     var displayName: String = ""
     var desc: String = ""
-    val descData: DescData =
-        DescData()
+    val descData: DescData = DescData()
     val url: String = ""
     var website: String = ""
     val logoHash: String = ""
@@ -127,10 +126,8 @@ class Organization internal constructor() : TrelloObject() {
 
     class OrganizationLimits {
         class OrgLimit {
-            val totalMembersPerOrg: LimitOptions =
-                LimitOptions()
-            val freeBoardsPerOrg: LimitOptions =
-                LimitOptions()
+            val totalMembersPerOrg: LimitOptions = LimitOptions()
+            val freeBoardsPerOrg: LimitOptions = LimitOptions()
         }
     }
 

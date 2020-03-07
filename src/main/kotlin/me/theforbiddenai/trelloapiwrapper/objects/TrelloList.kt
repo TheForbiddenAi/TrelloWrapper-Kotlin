@@ -79,14 +79,11 @@ class TrelloList internal constructor() : TrelloObject() {
     }
 
     class ListLimits {
-
         val cards: CardLimits = CardLimits()
 
         class CardLimits {
-
             val openPerList: LimitOptions = LimitOptions()
             val totalPerList: LimitOptions = LimitOptions()
-
         }
 
     }

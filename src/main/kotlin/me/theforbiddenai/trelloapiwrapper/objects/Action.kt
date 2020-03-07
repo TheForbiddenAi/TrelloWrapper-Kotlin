@@ -9,13 +9,11 @@ class Action internal constructor() : TrelloObject() {
 
     val id: String = ""
     val idMemberCreator: String = ""
-    val data: DataObject =
-        DataObject()
+    val data: DataObject = DataObject()
     val type: String = ""
     val date: Date? = null
     val display: Display = Display()
-    val memberCreator: ShortMember =
-        ShortMember()
+    val memberCreator: ShortMember = ShortMember()
 
     fun getBoard(): Board {
         val boardUrl = "${trelloApi.baseApiUrl}/actions/$id/board?${trelloApi.credentials}"

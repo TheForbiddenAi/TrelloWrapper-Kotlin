@@ -12,8 +12,7 @@ class Member internal constructor() : TrelloObject() {
     val avatarHash: String = ""
     val avatarUrl: String = ""
     var bio: String = ""
-    val bioData: DescData =
-        DescData()
+    val bioData: DescData = DescData()
     val confirmed: Boolean = false
     var fullName: String = ""
     val idEnterprise: String = ""
@@ -186,13 +185,11 @@ class Member internal constructor() : TrelloObject() {
         val orgs: OrgLimits = OrgLimits()
 
         class BoardLimits {
-            val totalPerMember: LimitOptions =
-                LimitOptions()
+            val totalPerMember: LimitOptions = LimitOptions()
         }
 
         class OrgLimits {
-            val totalPerMember: LimitOptions =
-                LimitOptions()
+            val totalPerMember: LimitOptions = LimitOptions()
         }
 
     }
@@ -203,7 +200,6 @@ class Member internal constructor() : TrelloObject() {
     }
 
     class MemberPrefs {
-
         val privacy: Privacy = Privacy()
         val sendSummaries: Boolean = false
         val minutesBetweenSummaries: Int = 0
