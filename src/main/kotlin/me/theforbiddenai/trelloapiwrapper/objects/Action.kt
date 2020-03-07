@@ -1,18 +1,21 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
+import com.google.gson.JsonObject
 import me.theforbiddenai.trelloapiwrapper.utils.DataObject
 import me.theforbiddenai.trelloapiwrapper.utils.ShortMember
 import java.util.*
 
-class Action : TrelloObject() {
+class Action internal constructor() : TrelloObject() {
 
     val id: String = ""
     val idMemberCreator: String = ""
-    val data: DataObject = DataObject()
+    val data: DataObject =
+        DataObject()
     val type: String = ""
     val date: Date? = null
     val display: Display = Display()
-    val memberCreator: ShortMember = ShortMember()
+    val memberCreator: ShortMember =
+        ShortMember()
 
     fun getBoard(): Board {
         val boardUrl = "${trelloApi.baseApiUrl}/actions/$id/board?${trelloApi.credentials}"
@@ -44,6 +47,16 @@ class Action : TrelloObject() {
         return getTrelloObject(listUrl)
     }
 
+    fun getReactions(): Array<Reaction> {
+        val reactionsUrl = "${trelloApi.baseApiUrl}/actions/$id/reactions?${trelloApi.credentials}"
+        return getTrelloObjectArray(reactionsUrl)
+    }
+
+    fun getReactionById(reactionId: String): Reaction {
+        val reactionUrl = "${trelloApi.baseApiUrl}/actions/$id/reactions/$reactionId?${trelloApi.credentials}"
+        return getTrelloObject(reactionUrl)
+    }
+
     fun updateComment(commentText: String) {
         val json = trelloApi.gson.toJson(this)
 
@@ -53,9 +66,29 @@ class Action : TrelloObject() {
         trelloApi.httpRequests.putRequest(updateActionUrl, json)
     }
 
+    fun addReaction(shortName: String, skinVariation: String, native: String, unified: String): Reaction {
+        val jsonObject = JsonObject()
+        if (shortName.isNotEmpty()) jsonObject.addProperty("shortName", shortName)
+        if (skinVariation.isNotEmpty()) jsonObject.addProperty("skinVariation", skinVariation)
+        if (native.isNotEmpty()) jsonObject.addProperty("native", native)
+        if (unified.isNotEmpty()) jsonObject.addProperty("unified", unified)
+
+        val addReactionUrl = "${trelloApi.baseApiUrl}/actions/$id/reactions?${trelloApi.credentials}"
+
+        val jsonString = jsonObject.toString()
+        val result = trelloApi.httpRequests.postRequest(addReactionUrl, jsonString)
+
+        return createObjectFromJson(result)
+    }
+
+    fun removeReaction(reactionId: String) {
+        val removeReactionUrl = "${trelloApi.baseApiUrl}/actions/$id/reactions/$reactionId?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(removeReactionUrl)
+    }
+
     fun deleteComment() {
-        val updateActionUrl = "${trelloApi.baseApiUrl}/actions/$id?${trelloApi.credentials}"
-        trelloApi.httpRequests.deleteRequest(updateActionUrl)
+        val deleteActionUrl = "${trelloApi.baseApiUrl}/actions/$id?${trelloApi.credentials}"
+        trelloApi.httpRequests.deleteRequest(deleteActionUrl)
     }
 
 

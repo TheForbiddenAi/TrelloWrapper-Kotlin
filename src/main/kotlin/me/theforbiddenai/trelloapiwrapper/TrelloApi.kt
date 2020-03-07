@@ -67,7 +67,7 @@ class TrelloApi(
     }
 
     fun getOrganization(organizationId: String): Organization {
-        val notificationUrl = "$baseApiUrl/organizations/$organizationId?fields=all&$credentials"
+        val notificationUrl = "$baseApiUrl/organizations/$organizationId?$credentials"
         return getTrelloObject(notificationUrl)
     }
 

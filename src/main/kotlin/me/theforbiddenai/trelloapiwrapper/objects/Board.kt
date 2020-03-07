@@ -3,6 +3,7 @@ package me.theforbiddenai.trelloapiwrapper.objects
 import me.theforbiddenai.trelloapiwrapper.TrelloApi
 import me.theforbiddenai.trelloapiwrapper.utils.DescData
 import me.theforbiddenai.trelloapiwrapper.utils.LimitOptions
+import me.theforbiddenai.trelloapiwrapper.utils.Membership
 import java.util.*
 
 class Board internal constructor() : TrelloObject() {
@@ -25,7 +26,8 @@ class Board internal constructor() : TrelloObject() {
     val id: String = ""
     var name: String = ""
     var desc: String = ""
-    val descData: DescData = DescData()
+    val descData: DescData =
+        DescData()
     var closed: Boolean = false
     var idOrganization: String = ""
     val idEnterprise: String = ""
@@ -210,72 +212,90 @@ class Board internal constructor() : TrelloObject() {
 
         class AttachmentLimits {
 
-            val perBoard: LimitOptions = LimitOptions()
-            val perCard: LimitOptions = LimitOptions()
+            val perBoard: LimitOptions =
+                LimitOptions()
+            val perCard: LimitOptions =
+                LimitOptions()
         }
 
         class BoardLimits {
 
-            val totalMembersPerBoard: LimitOptions = LimitOptions()
+            val totalMembersPerBoard: LimitOptions =
+                LimitOptions()
 
         }
 
         class CardLimits {
 
-            val openPerBoard: LimitOptions = LimitOptions()
-            val openPerList: LimitOptions = LimitOptions()
-            val totalPerBoard: LimitOptions = LimitOptions()
-            val totalPerList: LimitOptions = LimitOptions()
+            val openPerBoard: LimitOptions =
+                LimitOptions()
+            val openPerList: LimitOptions =
+                LimitOptions()
+            val totalPerBoard: LimitOptions =
+                LimitOptions()
+            val totalPerList: LimitOptions =
+                LimitOptions()
         }
 
         class CheckListLimits {
 
-            val perBoard: LimitOptions = LimitOptions()
-            val perCard: LimitOptions = LimitOptions()
+            val perBoard: LimitOptions =
+                LimitOptions()
+            val perCard: LimitOptions =
+                LimitOptions()
 
         }
 
         class CheckItemLimits {
 
-            val perChecklist: LimitOptions = LimitOptions()
+            val perChecklist: LimitOptions =
+                LimitOptions()
 
         }
 
         class CustomFieldLimits {
 
-            val perBoard: LimitOptions = LimitOptions()
+            val perBoard: LimitOptions =
+                LimitOptions()
 
         }
 
         class CustomFieldOptionLimits {
 
-            val perField: LimitOptions = LimitOptions()
+            val perField: LimitOptions =
+                LimitOptions()
 
         }
 
         class LabelLimits {
 
-            val perBoard: LimitOptions = LimitOptions()
+            val perBoard: LimitOptions =
+                LimitOptions()
 
         }
 
         class ListLimits {
 
-            val openPerBoard: LimitOptions = LimitOptions()
-            val totalPerBoard: LimitOptions = LimitOptions()
+            val openPerBoard: LimitOptions =
+                LimitOptions()
+            val totalPerBoard: LimitOptions =
+                LimitOptions()
 
         }
 
         class StickerLimits {
 
-            val perCard: LimitOptions = LimitOptions()
+            val perCard: LimitOptions =
+                LimitOptions()
 
         }
 
         class ReactionLimits {
 
-            val perAction: LimitOptions = LimitOptions()
-            val uniquePerAction: LimitOptions = LimitOptions()
+            val perAction: LimitOptions =
+                LimitOptions()
+            val uniquePerAction: LimitOptions =
+                LimitOptions()
 
         }
 
@@ -341,16 +361,6 @@ class Board internal constructor() : TrelloObject() {
             val idBoard: String = ""
             val pos: Float = 0F
         }
-    }
-
-    class Membership {
-
-        val id: String = ""
-        val idMember: String = ""
-        val memberType: String = ""
-        val unconfirmed: Boolean = false
-        val deactivated: Boolean = false
-
     }
 
 }

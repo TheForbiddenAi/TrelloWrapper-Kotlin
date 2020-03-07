@@ -4,16 +4,18 @@ import me.theforbiddenai.trelloapiwrapper.utils.DataObject
 import me.theforbiddenai.trelloapiwrapper.utils.ShortMember
 import java.util.*
 
-class Notification : TrelloObject() {
+class Notification internal constructor() : TrelloObject() {
 
     val id: String = ""
-    val data: DataObject = DataObject()
+    val data: DataObject =
+        DataObject()
     val date: Date? = null
     val idMemberCreator: String = ""
     val idAction: String = ""
     val type: String = ""
     var unread: Boolean = false
-    val memberCreator: ShortMember = ShortMember()
+    val memberCreator: ShortMember =
+        ShortMember()
 
     fun getBoard(): Board {
         val boardUrl = "${trelloApi.baseApiUrl}/notifications/$id/board?${trelloApi.credentials}"

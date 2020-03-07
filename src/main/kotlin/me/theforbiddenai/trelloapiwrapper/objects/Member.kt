@@ -5,14 +5,15 @@ import me.theforbiddenai.trelloapiwrapper.utils.LimitOptions
 import me.theforbiddenai.trelloapiwrapper.utils.Sticker
 import java.util.*
 
-class Member : TrelloObject() {
+class Member internal constructor() : TrelloObject() {
 
     val id: String = ""
     val activityBlocked: Boolean = false
     val avatarHash: String = ""
     val avatarUrl: String = ""
     var bio: String = ""
-    val bioData: DescData = DescData()
+    val bioData: DescData =
+        DescData()
     val confirmed: Boolean = false
     var fullName: String = ""
     val idEnterprise: String = ""
@@ -185,11 +186,13 @@ class Member : TrelloObject() {
         val orgs: OrgLimits = OrgLimits()
 
         class BoardLimits {
-            val totalPerMember: LimitOptions = LimitOptions()
+            val totalPerMember: LimitOptions =
+                LimitOptions()
         }
 
         class OrgLimits {
-            val totalPerMember: LimitOptions = LimitOptions()
+            val totalPerMember: LimitOptions =
+                LimitOptions()
         }
 
     }
@@ -238,5 +241,5 @@ class Member : TrelloObject() {
 enum class MemberPrefNames(internal val prefName: String) {
     COLOR_BLIND("colorBlind"),
     LOCALE("locale"),
-    MINUTES_BETWEEN_SUMMARIES("minutesBetweenSummaries"),
+    MINUTES_BETWEEN_SUMMARIES("minutesBetweenSummaries")
 }

@@ -19,7 +19,8 @@ class Card internal constructor() : TrelloObject() {
     var closed: Boolean = false
     val dateLastActivity: Boolean = false
     var desc: String = ""
-    val descData: DescData = DescData()
+    val descData: DescData =
+        DescData()
     val dueReminder: Int = 0
     var idBoard: String = ""
     var idList: String = ""

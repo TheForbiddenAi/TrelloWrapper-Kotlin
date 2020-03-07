@@ -1,6 +1,6 @@
 package me.theforbiddenai.trelloapiwrapper.objects
 
-class Enterprise : TrelloObject() {
+class Enterprise internal constructor() : TrelloObject() {
 
     val id: String = ""
     val name: String = ""
@@ -48,10 +48,10 @@ class Enterprise : TrelloObject() {
         return getTrelloObjectArray(nonTransferableMember)
     }
 
-    fun deactivateMember(memberId: String) {
-        val deactivateMemberUrl =
-            "${trelloApi.baseApiUrl}/enterprises/$id/members/$memberId/deactivated?value=true&${trelloApi.credentials}"
-        trelloApi.httpRequests.putRequest(deactivateMemberUrl)
+    fun updateMemberStatus(memberId: String, deactivated: Boolean) {
+        val updateMemberStatusUrl =
+            "${trelloApi.baseApiUrl}/enterprises/$id/members/$memberId/deactivated?value=$deactivated&${trelloApi.credentials}"
+        trelloApi.httpRequests.putRequest(updateMemberStatusUrl)
     }
 
     fun addOrganization(organizationId: String) {

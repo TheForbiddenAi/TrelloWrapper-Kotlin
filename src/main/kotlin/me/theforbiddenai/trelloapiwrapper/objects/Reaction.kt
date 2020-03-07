@@ -2,13 +2,14 @@ package me.theforbiddenai.trelloapiwrapper.objects
 
 import me.theforbiddenai.trelloapiwrapper.utils.ShortMember
 
-class Reaction : TrelloObject() {
+class Reaction internal constructor() : TrelloObject() {
 
     val id: String = ""
     val idMember: String = ""
     val idModel: String = ""
     val idEmoji: String = ""
-    val member: ShortMember = ShortMember()
+    val member: ShortMember =
+        ShortMember()
     val emoji: Emoji = Emoji()
 
     class Emoji {

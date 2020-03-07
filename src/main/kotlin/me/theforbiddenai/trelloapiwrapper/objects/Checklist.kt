@@ -80,7 +80,8 @@ class Checklist internal constructor() : TrelloObject() {
         val idMember: String = ""
         val id: String = ""
         val name: String = ""
-        val nameData: DescData = DescData()
+        val nameData: DescData =
+            DescData()
         val type: String = ""
         val pos: Float = 0F
         val due: Date? = null
