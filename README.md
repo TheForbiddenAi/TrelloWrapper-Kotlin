@@ -22,7 +22,7 @@ Make sure to replace **VERSION** with the version shown above
 ```xml
 <dependency>
     <groupId>com.github.TheForbiddenAi</groupId>
-    <artifactId>TrelloApiWrapper-Kotlin</artifactId>
+    <artifactId>TrelloWrapper-Kotlin</artifactId>
     <version>VERSION</version>
 </dependency>
 ```
