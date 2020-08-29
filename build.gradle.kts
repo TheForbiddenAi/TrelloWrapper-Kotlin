@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") version "1.4.0"
 }
 
-group = "me.theforbiddenai"
+group = "com.github.theforbiddenai"
 version = "1.0.1"
 
 repositories {
